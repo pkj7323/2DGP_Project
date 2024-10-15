@@ -1,14 +1,16 @@
 from pico2d import *
-
 from Project.tile_map import tileMap
 from Project.tile_map_manager import TileMapManager
 
 # Game object class here
 world = []#게임 오브젝트 리스트
-tile_map_instance = TileMapManager()
+running = True
+
+
 def handle_events():
     global running
     global world
+    tile_map_instance = TileMapManager()
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
@@ -53,5 +55,12 @@ while running:
     update_world()
     render_world()
     delay(0.01)
+
+for o in world:
+    if isinstance(o, tileMap):
+        f = open('tiles.txt','a')
+        f.write(f'{o.x} {o.y} {o.size}\n')
+        f.close()
+
 # finalization code
 close_canvas()

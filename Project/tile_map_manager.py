@@ -11,5 +11,4 @@ class TileMapManager:
         new_tile.y = y
         if new_tile.image == None:
             new_tile.image = load_image('Resource\\tile1.png')
-            new_tile.size = 64
         return new_tile

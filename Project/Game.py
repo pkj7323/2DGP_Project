@@ -1,10 +1,16 @@
 from pico2d import *
-from Project.tile_map import tileMap
+
+from BackGround import *
+from Project.Grid import Grid
+from Project.tile_map import TileMap
 from Project.tile_map_manager import TileMapManager
 
 # Game object class here
 world = []#게임 오브젝트 리스트
+
+
 running = True
+
 
 
 def handle_events():
@@ -18,8 +24,25 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
         elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
-            new_Tile = tile_map_instance.click(event.x, pico2d.get_canvas_height() - event.y)
-            world.append(new_Tile)
+            new_tile = tile_map_instance.click(event.x, event.y)
+            if new_tile != None:
+                world.append(new_tile)
+            else:
+                pass
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_F9:
+            for o in world:
+                if isinstance(o, TileMap):
+                    f = open('tiles.txt', 'a')
+                    f.write(f'{o.x},{o.y}\n')
+                    f.close()
+                    #타일맵 추가 저장
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_F8:
+            for o in world:
+                if isinstance(o, TileMap):
+                    f = open('tiles.txt', 'w')
+                    f.write(f'{o.x},{o.y}\n')
+                    f.close()
+                    #타일맵 다시저장
         else:
             pass
 
@@ -29,9 +52,15 @@ def reset_world():
     global world
 
     running = True
+    background = BackGround()
     world = []
-
-
+    world.append(background)
+    tiles = open("tiles.txt", 'r')
+    for line in tiles.readlines():
+        x, y = map(int, line.split(','))
+        tileMap = TileMap(x, y)
+        tileMap.image = load_image('Resource/tile1.png')
+        world.append(tileMap)
 
 
 def update_world():
@@ -56,11 +85,7 @@ while running:
     render_world()
     delay(0.01)
 
-for o in world:
-    if isinstance(o, tileMap):
-        f = open('tiles.txt','a')
-        f.write(f'{o.x} {o.y} {o.size}\n')
-        f.close()
+
 
 # finalization code
 close_canvas()

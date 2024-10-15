@@ -1,10 +1,10 @@
 from pico2d import *
 
-class tileMap():
+class TileMap():
     image = None
-    def __init__(self):
-        self.x = 0
-        self.y = 0
+    def __init__(self,x=0,y=0):
+        self.x = x
+        self.y = y
         self.size = 20
     def draw(self):
         if self.image is None:

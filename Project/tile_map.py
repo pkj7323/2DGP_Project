@@ -12,3 +12,6 @@ class TileMap():
         self.image.draw(self.x,self.y,self.size,self.size)
     def update(self):
         pass
+    def move(self,x,y):
+        self.x += x
+        self.y += y

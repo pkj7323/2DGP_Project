@@ -10,7 +10,13 @@ world = []#게임 오브젝트 리스트
 
 
 running = True
-
+class Camera:
+    def __init__(self):
+        self.x = 0
+        self.y = 0
+    def move(self, x, y):
+        self.x += x
+        self.y += y
 
 
 def handle_events():
@@ -43,6 +49,9 @@ def handle_events():
                     f.write(f'{o.x},{o.y}\n')
                     f.close()
                     #타일맵 다시저장
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_LEFT:
+            for o in world:
+                o.move(20,0)
         else:
             pass
 

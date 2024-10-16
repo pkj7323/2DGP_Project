@@ -7,7 +7,7 @@ class TileMapManager:
     def __init__(self):
         self.grid = Grid(800,600,20)
     def click(self, x, y):
-        center_x, center_y = self.grid.adjust_to_nearest_center(x, get_canvas_height() - y)
+        center_x, center_y = self.grid.adjust_to_nearest_center(x, y)
         if self.grid.is_center_available((center_x, center_y)):
             self.grid.mark_center_used((center_x, center_y))
             new_tile = TileMap(center_x, center_y)

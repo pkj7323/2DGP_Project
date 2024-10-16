@@ -1,7 +1,5 @@
 class Grid:
-    def __init__(self, width, height, cell_size):
-        self.width = width
-        self.height = height
+    def __init__(self, cell_size):
         self.cell_size = cell_size
         self.used_centers = set()
 

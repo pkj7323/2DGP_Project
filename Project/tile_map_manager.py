@@ -42,6 +42,19 @@ class TileMapManager:
                 if isinstance(o, TileMap):
                     f.write(f'{o.adjust_x},{o.adjust_y},{o.state.value}\n')
             f.close()
+    def save_no_duplication(self,path):
+        f1 = open(path, 'r')
+        lines = f1.readlines()
+        lines = list(set(lines))
+        lines.sort()
+
+        f2 = open(path, 'w')#오픈 하는 즉시 모든 정보 사라짐
+        for line in lines:
+            f2.write(line)
+        f2.close()
+
+        f2.close()
+
 
     def handle_event(self, event, world, Camera_Instance):
         if event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
@@ -50,9 +63,6 @@ class TileMapManager:
                 world.append(new_tile)
             else:
                 pass
-        # elif event.type == SDL_KEYDOWN and event.key == SDLK_F9:
-        #     self.save(world, 'tiles.txt', 0)
-        #     # 타일맵 추가 저장
         elif event.type == SDL_KEYDOWN and event.key == SDLK_F8:
-            self.save(world, 'tiles.txt', 1)
-            # 타일맵 다시저장
+            self.save(world, 'tiles.txt', 0)
+            # 타일맵 추가저장

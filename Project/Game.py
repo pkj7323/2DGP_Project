@@ -13,6 +13,7 @@ tile_map_instance = TileMapManager()
 running = True
 
 
+
 def handle_events():
     global running
     global world
@@ -60,6 +61,9 @@ def render_world():
             o.draw()
     update_canvas()
 
+def destroy(): # finalization code
+    tile_map_instance.save_no_duplication('tiles.txt')
+    close_canvas()
 
 open_canvas()
 reset_world()
@@ -71,6 +75,4 @@ while running:
     delay(0.01)
 
 
-
-# finalization code
-close_canvas()
+destroy()

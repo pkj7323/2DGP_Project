@@ -39,7 +39,7 @@ def reset_world():
     background = BackGround()
     world = []
     world.append(background)
-    tile_map_instance.open_tile(world,'tiles.txt')
+    world.extend(tile_map_instance.open_tile('tiles.txt'))
 
 
 def update_world():

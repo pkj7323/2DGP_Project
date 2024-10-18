@@ -18,14 +18,16 @@ class TileMapManager:
             return new_tile
         else:
             return None
-    def open_tile(self, world, path):
+    def open_tile(self, path):
         tiles = open(path, 'r')
+        world =[]
         for line in tiles.readlines():
             x, y , state = map(int, line.split(','))
             state = BlockState(state)
             tileMap = TileMap(x, y,0,0, state)
             tileMap.image = load_image('Resource/tile1.png')
             world.append(tileMap)
+        return world
 
     def save(self,world, path, mode):
         if mode == 0:

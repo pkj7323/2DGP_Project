@@ -1,5 +1,6 @@
-import pygame
 from pico2d import *
+
+from Project.BlockState import BlockState
 
 
 class Camera:
@@ -39,5 +40,6 @@ class Camera:
     def move(self, world):
         self.x += 20 * self.dir_x
         self.y += 20 * self.dir_y
-        for o in world:
-            o.move(-20 * self.dir_x,-20 * self.dir_y)
+        for i in range(BlockState.end.value):
+            for o in world[i]:
+                o.move(-20 * self.dir_x,-20 * self.dir_y)

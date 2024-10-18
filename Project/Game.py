@@ -2,15 +2,16 @@ from pico2d import *
 
 from BackGround import *
 from Camera import Camera
+from Project.BlockState import BlockState
 from Project.tile_map import TileMap
-from tile_map_manager import TileMapManager
-
+import tile_map_manager
 
 # Game object class here
 world = []#게임 오브젝트 리스트
 Camera_Instance = Camera()
-tile_map_instance = TileMapManager()
+tile_map_instance = tile_map_manager.TileMapManager()
 running = True
+
 
 
 
@@ -38,35 +39,45 @@ def reset_world():
     Camera_Instance = Camera()
     running = True
     background = BackGround()
-    world = []
-    world.append(background)
-    world.extend(tile_map_instance.open_tile('tiles.txt'))
+    world = [[] for i in range(BlockState.end.value)]
+    world[BlockState.backGround.value].append(background)
+    tiles = tile_map_instance.open_tile('tiles.txt')
+    for tile in tiles:
+        if tile.state.value == BlockState.wall.value:
+            world[BlockState.wall.value].append(tile)
+        else:
+            pass
 
 
 def update_world():
     global Camera_Instance
-    for o in world:
-        o.update()
+    for i in range(BlockState.end.value):
+        for o in world[i]:
+            o.update()
     Camera_Instance.move(world)
 
 
 def render_world():
     clear_canvas()
-    for o in world:
-        if isinstance(o,TileMap):
-            if Camera_Instance.is_obj_in_camera(o):
+    for i in range(BlockState.end.value):
+        for o in world[i]:
+            if isinstance(o,TileMap):
+                if Camera_Instance.is_obj_in_camera(o):
+                    o.draw()
+                    # 창을 넘어간 객체는 그리지 않음
+            else:
                 o.draw()
-                # 창을 넘어간 객체는 그리지 않음
-        else:
-            o.draw()
     update_canvas()
 
 def destroy(): # finalization code
-    tile_map_instance.save_no_duplication('tiles.txt')
+    tile_map_manager.save_no_duplication('tiles.txt')
     close_canvas()
+
+
 
 open_canvas()
 reset_world()
+
 # game loop
 while running:
     handle_events()

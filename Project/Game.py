@@ -2,6 +2,7 @@ from pico2d import *
 
 from BackGround import *
 from Camera import Camera
+from Project.tile_map import TileMap
 from tile_map_manager import TileMapManager
 
 
@@ -51,7 +52,12 @@ def update_world():
 def render_world():
     clear_canvas()
     for o in world:
-        o.draw()
+        if isinstance(o,TileMap):
+            if Camera_Instance.is_obj_in_camera(o):
+                o.draw()
+                # 창을 넘어간 객체는 그리지 않음
+        else:
+            o.draw()
     update_canvas()
 
 

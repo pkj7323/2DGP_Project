@@ -21,8 +21,9 @@ class TileMapManager:
     def open_tile(self, world, path):
         tiles = open(path, 'r')
         for line in tiles.readlines():
-            x, y = map(int, line.split(','))
-            tileMap = TileMap(x, y)
+            x, y , state = map(int, line.split(','))
+            state = BlockState(state)
+            tileMap = TileMap(x, y,0,0, state)
             tileMap.image = load_image('Resource/tile1.png')
             world.append(tileMap)
 
@@ -31,13 +32,13 @@ class TileMapManager:
             f = open(path, 'a')
             for o in world:
                 if isinstance(o, TileMap):
-                    f.write(f'{o.adjust_x},{o.adjust_y}\n')
+                    f.write(f'{o.adjust_x},{o.adjust_y},{o.state.value}\n')
             f.close()
         elif mode == 1:
             f = open(path, 'w')
             for o in world:
                 if isinstance(o, TileMap):
-                    f.write(f'{o.adjust_x},{o.adjust_y}\n')
+                    f.write(f'{o.adjust_x},{o.adjust_y},{o.state.value}\n')
             f.close()
 
     def handle_event(self, event, world, Camera_Instance):

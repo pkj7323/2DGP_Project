@@ -4,10 +4,16 @@ from pico2d import *
 
 class Camera:
     def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.dir_x = 0
-        self.dir_y = 0
+        self.x = 0; self.y = 0
+        self.width = 800 ; self.height = 600
+        self.dir_x = 0; self.dir_y = 0
+    def is_obj_in_camera(self, obj):
+        # obj is tilemap
+        if self.x < obj.adjust_x < self.x + self.width and self.y < obj.adjust_y < self.y + self.height:
+            return True
+        else:
+            return False
+
     def update(self):
         pass
     def handle_event(self,event):

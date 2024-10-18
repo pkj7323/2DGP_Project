@@ -16,11 +16,19 @@ class Camera:
                 self.dir_x += -1
             elif event.key == SDLK_RIGHT:
                 self.dir_x += 1
+            elif event.key == SDLK_DOWN:
+                self.dir_y += -1
+            elif event.key == SDLK_UP:
+                self.dir_y += 1
         if event.type == SDL_KEYUP:
             if event.key == SDLK_LEFT:
                 self.dir_x += 1
             elif event.key == SDLK_RIGHT:
                 self.dir_x += -1
+            elif event.key == SDLK_DOWN:
+                self.dir_y += +1
+            elif event.key == SDLK_UP:
+                self.dir_y += -1
 
     def move(self, world):
         self.x += 20 * self.dir_x

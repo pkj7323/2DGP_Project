@@ -43,18 +43,13 @@ class TileMapManager:
     def handle_event(self, event, world, Camera_Instance):
         if event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
             new_tile = self.click(event.x, (get_canvas_height() - event.y), Camera_Instance)
-            # 이벤트 x입력은 오른쪽 아래 기준 0,0부터 시작
-            # 만약 카메라를 왼쪽으로 갔다면? x를 -20 갔다는 가정하에
-            # 다시 0,0 에다가 점을 찍으면 좌표값이 -20,0 에 찍혀야됨
-            # 실제로 -20, 0 에 잘 찍히는데 문제는 실제 캔버스가 움직인것은 아니라 이상한곳에 찍힘
-            # 저장할때 조절해서 저장
             if new_tile != None:
                 world.append(new_tile)
             else:
                 pass
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_F9:
-            self.save(world, 'tiles.txt', 0)
-            # 타일맵 추가 저장
+        # elif event.type == SDL_KEYDOWN and event.key == SDLK_F9:
+        #     self.save(world, 'tiles.txt', 0)
+        #     # 타일맵 추가 저장
         elif event.type == SDL_KEYDOWN and event.key == SDLK_F8:
             self.save(world, 'tiles.txt', 1)
             # 타일맵 다시저장

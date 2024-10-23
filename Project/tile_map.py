@@ -1,4 +1,6 @@
 import enum
+import math
+
 from pico2d import *
 from Project.BlockState import BlockState
 class Blocks(enum.Enum):
@@ -13,10 +15,9 @@ class TileMap:
     frame = 0
     offset = 0
     blocks = Blocks(1)
-    flip = ''
-    degree = 0
     speed = 0.0
-    def __init__(self,x=0,y=0,camera_x=0,camera_y=0,state = BlockState(1), blocks = Blocks(1)):
+    def __init__(self,x=0,y=0,camera_x=0,camera_y=0,state = BlockState(1), blocks = Blocks(1)
+                 ,flip='',rad=0.0):
         self.x = x # 카메라 기준 상대적 현재 좌표
         self.y = y # 카메라 기준 상대적 현재 좌표
         self.adjust_x = camera_x + self.x # 월드 기준 절대 좌표
@@ -24,12 +25,14 @@ class TileMap:
         self.blocks = blocks
         self.state = state
         self.deltaFrame = 0.0
+        self.flip = flip
+        self.rad = rad
 
     def draw(self):
         if self.image is None:
             return
         self.image.clip_composite_draw(self.frame * self.offset, 0, self.tile_pixel_size, self.tile_pixel_size,
-                                       self.degree, self.flip, self.x, self.y, self.size, self.size)
+                                       self.rad, self.flip, self.x, self.y, self.size, self.size)
     def update(self):
         self.deltaFrame += self.speed
         if self.frameMax != 0:

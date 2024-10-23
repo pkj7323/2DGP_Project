@@ -3,6 +3,7 @@ from pico2d import *
 from BackGround import *
 from Camera import Camera
 from Project.BlockState import BlockState
+from Project.MouseIcon import MouseIcon
 from Project.tile_map import TileMap
 import tile_map_manager
 
@@ -10,6 +11,7 @@ import tile_map_manager
 world = []#게임 오브젝트 리스트
 Camera_Instance = Camera()
 tile_map_instance = tile_map_manager.TileMapManager()
+cursor = MouseIcon()
 running = True
 
 
@@ -29,6 +31,7 @@ def handle_events():
         else:
             Camera_Instance.handle_event(event)
             tile_map_instance.handle_event(event,world, Camera_Instance)
+            cursor.handle_event(event)
             pass
 
 
@@ -36,6 +39,7 @@ def reset_world():
     global running
     global world
     global Camera_Instance
+    global cursor
     Camera_Instance = Camera()
     running = True
     background = BackGround()
@@ -47,10 +51,12 @@ def reset_world():
             world[BlockState.wall.value].append(tile)
         else:
             pass
+    cursor.image=load_image('Resource/cursor.png')
 
 
 def update_world():
     global Camera_Instance
+    cursor.update()
     for i in range(BlockState.end.value):
         for o in world[i]:
             o.update()
@@ -67,6 +73,7 @@ def render_world():
                     # 창을 넘어간 객체는 그리지 않음
             else:
                 o.draw()
+    cursor.draw()
     update_canvas()
 
 def destroy(): # finalization code
@@ -75,7 +82,12 @@ def destroy(): # finalization code
 
 
 
+
+
+
+
 open_canvas()
+hide_cursor()
 reset_world()
 
 # game loop

@@ -42,4 +42,6 @@ class Camera:
         self.y += 20 * self.dir_y
         for i in range(BlockState.end.value):
             for o in world[i]:
-                o.move(-20 * self.dir_x,-20 * self.dir_y)
+                if(o.state.value == BlockState.mouse.value):
+                    continue
+                o.move(-20 * self.dir_x ,-20 * self.dir_y)

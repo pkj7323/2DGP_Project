@@ -1,5 +1,8 @@
+import enum
+
 from Project.BlockState import BlockState
 from Project.tile_map import TileMap
+from tile_map import Blocks
 from pico2d import *
 from Grid import *
 
@@ -21,21 +24,23 @@ def save_no_duplication(path):
 
 
 
+
 class TileMapManager:
 
     def __init__(self):
         self.tile_size = 20
         self.grid = Grid(self.tile_size)
         self.state = BlockState.BlockState(1)
+        self.nowBlocks = Blocks(1)
     def click(self, x, y, camera,block_state):#block_state == type(BlockState)
 
         center_x, center_y = self.grid.adjust_to_nearest_center(x + camera.x, y + camera.y)
         tile_x, tile_y = self.grid.adjust_to_nearest_center(x,y)
         #마우스 위치보정하는 코드
 
-        if self.grid.is_center_available((center_x, center_y), block_state):
-            self.grid.mark_center_used((center_x, center_y), block_state)
-            new_tile = TileMap(tile_x, tile_y,camera.x, camera.y,block_state)
+        if self.grid.is_center_available((center_x, center_y, self.nowBlocks.value), block_state):
+            self.grid.mark_center_used((center_x, center_y, self.nowBlocks.value), block_state)
+            new_tile = TileMap(tile_x, tile_y,camera.x, camera.y,block_state,self.nowBlocks)
             new_tile.loadImage()
             return new_tile
         else:
@@ -55,16 +60,19 @@ class TileMapManager:
                 self.save(world, 'tiles.txt', 0)
             elif event.key == SDLK_F9:
                 self.save(world, 'tiles.txt', 1)
+            elif event.key == SDLK_a:
+                self.nowBlocks = Blocks.conveyor
             # 타일맵 추가저장
 
     def open_tile(self,path):
         tiles = open(path, 'r')
         world = []
         for line in tiles.readlines():
-            x, y, state = map(int, line.split(','))
+            x, y, image, state = map(int, line.split(','))
             state = BlockState.BlockState(state)
-            tile_map = TileMap(x, y, 0, 0, state)
-            self.grid.mark_center_used((x, y), state) #파일에서 타일 불러올때 그리드에도 업데이트를 함
+            image = Blocks(image)
+            tile_map = TileMap(x, y, 0, 0, state, image)
+            self.grid.mark_center_used((x, y, image), state) #파일에서 타일 불러올때 그리드에도 업데이트를 함
             tile_map.loadImage()
             world.append(tile_map)
         return world
@@ -75,7 +83,7 @@ class TileMapManager:
             for i in range(BlockState.BlockState.end.value):
                 for o in world[i]:
                     if isinstance(o, TileMap):
-                        f.write(f'{o.adjust_x},{o.adjust_y},{o.state.value}\n')
+                        f.write(f'{o.adjust_x},{o.adjust_y},{o.blocks.value},{o.state.value}\n')
             f.close()
         elif mode == 1:
             f = open(path, 'w')
@@ -85,6 +93,6 @@ class TileMapManager:
                     i += 1
                     continue
                 for used_center_tuple in used_center_set:
-                    f.write(f'{used_center_tuple[0]},{used_center_tuple[1]},{i}\n')
+                    f.write(f'{used_center_tuple[0]},{used_center_tuple[1]},{used_center_tuple[2]},{i}\n')
                 i += 1
             f.close()

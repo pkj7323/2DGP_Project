@@ -19,20 +19,6 @@ def save_no_duplication(path):
 
 
 
-def save(world, path, mode):
-    if mode == 0:
-        f = open(path, 'a')
-        for i in range(BlockState.BlockState.end.value):
-            for o in world[i]:
-              if isinstance(o, TileMap):
-                    f.write(f'{o.adjust_x},{o.adjust_y},{o.state.value}\n')
-        f.close()
-    elif mode == 1:
-        f = open(path, 'w')
-        for o in world:
-            if isinstance(o, TileMap):
-                f.write(f'{o.adjust_x},{o.adjust_y},{o.state.value}\n')
-        f.close()
 
 
 class TileMapManager:
@@ -64,8 +50,11 @@ class TileMapManager:
                 world[self.state.value].append(new_tile)
             else:
                 pass
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_F8:
-            save(world, 'tiles.txt', 0)
+        elif event.type == SDL_KEYDOWN:
+            if event.key == SDLK_F8:
+                self.save(world, 'tiles.txt', 0)
+            elif event.key == SDLK_F9:
+                self.save(world, 'tiles.txt', 1)
             # 타일맵 추가저장
 
     def open_tile(self,path):
@@ -79,3 +68,23 @@ class TileMapManager:
             tile_map.loadImage()
             world.append(tile_map)
         return world
+
+    def save(self,world, path, mode):
+        if mode == 0:
+            f = open(path, 'a')
+            for i in range(BlockState.BlockState.end.value):
+                for o in world[i]:
+                    if isinstance(o, TileMap):
+                        f.write(f'{o.adjust_x},{o.adjust_y},{o.state.value}\n')
+            f.close()
+        elif mode == 1:
+            f = open(path, 'w')
+            i = 0
+            for used_center_set in self.grid.used_centers:
+                if len(used_center_set) == 0:
+                    i += 1
+                    continue
+                for used_center_tuple in used_center_set:
+                    f.write(f'{used_center_tuple[0]},{used_center_tuple[1]},{i}\n')
+                i += 1
+            f.close()

@@ -6,6 +6,7 @@ from Project.BlockState import BlockState
 class TileMap():
     image = None
     size = 20
+    tile_pixel_size = 64
     def __init__(self,x=0,y=0,camera_x=0,camera_y=0,state = BlockState(1)):
         self.x = x # 카메라 기준 상대적 현재 좌표
         self.y = y # 카메라 기준 상대적 현재 좌표
@@ -15,7 +16,7 @@ class TileMap():
     def draw(self):
         if self.image is None:
             return
-        self.image.draw(self.x,self.y,self.size,self.size)
+        self.image.clip_draw(0,0,self.tile_pixel_size,self.tile_pixel_size,self.x,self.y,self.size,self.size)
     def update(self):
         pass
     def move(self,x,y):

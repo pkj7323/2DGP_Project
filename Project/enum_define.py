@@ -1,7 +1,7 @@
 import enum
-class BlockState(enum.Enum):
+class Layer(enum.Enum):
     backGround  = 0
-    wall        = 1
+    tile        = 1
     ore         = 2
     building    = 3
     mouse       = 9
@@ -10,3 +10,11 @@ class BlockState(enum.Enum):
 class Blocks(enum.Enum):
     wall = 1
     conveyor = 2
+
+class Items(enum.Enum):
+    beryllium = 1
+    coal = 2
+    copper = 3
+    pyratite = 4
+    titanium = 5
+    tungsten = 6

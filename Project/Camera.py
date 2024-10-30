@@ -1,6 +1,6 @@
 from pico2d import *
 
-from Project.BlockState import BlockState
+from Project.enum_define import Layer
 
 
 class Camera:
@@ -42,7 +42,7 @@ class Camera:
         tempy = self.y + 20 * self.dir_y
         doMove = True
         print(self.x, self.y)
-        background = world[BlockState.backGround.value][0]
+        background = world[Layer.backGround.value][0]
 
         if ((tempx >= background.width / 2 - self.width) or (tempy >= background.height / 2 - self.height)
             or (tempx <= -(background.width / 2 - self.width))) or (tempy <= -(background.height / 2 - self.height)):
@@ -53,8 +53,8 @@ class Camera:
         if doMove:
             self.x += 20 * self.dir_x
             self.y += 20 * self.dir_y
-            for i in range(BlockState.end.value):
+            for i in range(Layer.end.value):
                 for o in world[i]:
-                    if (o.state.value == BlockState.mouse.value):
+                    if (o.layer.value == Layer.mouse.value):
                         continue
                     o.move(-20 * self.dir_x, -20 * self.dir_y)

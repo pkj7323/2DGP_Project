@@ -1,13 +1,13 @@
 from pico2d import *
 
-from Project.BlockState import BlockState
+from Project.enum_define import Layer
 
 
 class MouseIcon:
     def __init__(self):
         self.x = 0
         self.y = 0
-        self.state = BlockState.mouse
+        self.state = Layer.mouse
         self.image = None
     def draw(self):
         self.image.draw(self.x,self.y)

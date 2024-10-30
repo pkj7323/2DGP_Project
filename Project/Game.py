@@ -2,7 +2,8 @@ from pico2d import *
 
 from BackGround import *
 from Camera import Camera
-from Project.BlockState import BlockState
+from Project.Oreitem import Oreitem
+from Project.enum_define import Layer, Items
 from Project.MouseIcon import MouseIcon
 from Project.tile_map import TileMap
 import tile_map_manager
@@ -28,10 +29,14 @@ def handle_events():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_TAB:
+            ore = Oreitem('beryllium_ore',10,10,Items(1))
+            world[Layer.ore.value].append(ore)
         else:
             Camera_Instance.handle_event(event)
             tile_map_instance.handle_event(event,world, Camera_Instance)
             cursor.handle_event(event)
+
             pass
 
 
@@ -43,21 +48,20 @@ def reset_world():
     Camera_Instance = Camera()
     running = True
     background = BackGround()
-    world = [[] for i in range(BlockState.end.value)]
-    world[BlockState.backGround.value].append(background)
-    tiles = tile_map_instance.open_tile('tiles.txt')
-    for tile in tiles:
-        if tile.state.value == BlockState.wall.value:
-            world[BlockState.wall.value].append(tile)
-        else:
-            pass
+    world = [[] for i in range(Layer.end.value)]
+    world[Layer.backGround.value].append(background)
+
+    tile_map_instance.open_tile('tiles.txt',world)
+
+
+
     cursor.image=load_image('Resource/cursor.png')
 
 
 def update_world():
     global Camera_Instance
     cursor.update()
-    for i in range(BlockState.end.value):
+    for i in range(Layer.end.value):
         for o in world[i]:
             o.update()
     Camera_Instance.move(world)
@@ -65,7 +69,7 @@ def update_world():
 
 def render_world():
     clear_canvas()
-    for i in range(BlockState.end.value):
+    for i in range(Layer.end.value):
         for o in world[i]:
             o.draw()
     cursor.draw()

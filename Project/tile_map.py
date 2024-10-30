@@ -1,5 +1,5 @@
 from pico2d import *
-from Project.BlockState import BlockState, Blocks
+from Project.enum_define import Layer, Blocks
 
 
 class TileMap:
@@ -10,14 +10,14 @@ class TileMap:
     offset = 0
     blocks = Blocks(1)
 
-    def __init__(self,x=0,y=0,camera_x=0,camera_y=0,state = BlockState(1), blocks = Blocks(1)
-                 ,flip='',rad=0.0):
+    def __init__(self, x=0, y=0, camera_x=0, camera_y=0, layer = Layer(1), blocks = Blocks(1)
+                 , flip='', rad=0.0):
         self.x = x # 카메라 기준 상대적 현재 좌표
         self.y = y # 카메라 기준 상대적 현재 좌표
         self.adjust_x = camera_x + self.x # 월드 기준 절대 좌표
         self.adjust_y = camera_y + self.y # 월드 기준 절대 좌표
         self.blocks = blocks
-        self.state = state
+        self.layer = layer
         self.flip = flip
         self.rad = rad
 
@@ -33,7 +33,7 @@ class TileMap:
         self.y += y
     def loadImage(self):
         if self.image is None:
-            if self.blocks.value == BlockState.wall.value:
+            if self.blocks.value == Layer.tile.value:
                 self.image = load_image('Resource/tile1.png')
             else:
                 self.image = load_image('Resource/error.png')

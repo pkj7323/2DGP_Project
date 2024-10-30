@@ -4,6 +4,8 @@ def time_out(e):
     return e[0] == 'TIME_OUT'
 def on_conveyor(e):
     return e[0] == 'ON_CONVEYOR'
+def leave_conveyor(e):
+    return e[0] == 'LEAVE_CONVEYOR'
 
 def right_down(e):
     return e[0]=='INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT

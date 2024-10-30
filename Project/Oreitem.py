@@ -1,7 +1,10 @@
-from Project.state_machine import StateMachine
+from pico2d import load_image
+
+from Project.enum_define import Layer, Items
+from Project.state_machine import StateMachine, on_conveyor, leave_conveyor
 
 
-class move:
+class Move:
     @staticmethod
     def enter(ore, e):
         pass
@@ -9,10 +12,11 @@ class move:
     def exit(ore, e):
         pass
     @staticmethod
-    def do():
+    def do(ore):
+        #ore.state_machine.add_event(('ON_CONVEYOR', 0))
         pass
     @staticmethod
-    def draw():
+    def draw(ore):
         pass
 class Idle:
     @staticmethod
@@ -24,25 +28,47 @@ class Idle:
         pass
 
     @staticmethod
-    def do():
+    def do(ore):
         pass
 
     @staticmethod
-    def draw():
-        pass
+    def draw(ore):
+        #left, bottom, width, height, x, y, w = None, h = None
+        #draw(self, x, y, w=None, h=None):
+        ore.image.draw(ore.x, ore.y, 16, 16)
 
 
 class Oreitem:
-    def __init__(self, name, price):
+    image = None
+    pixel_size = 32
+    def __init__(self, name, x, y, oretype = Items(1)):
+        #필요한거: 위치, 이미지, state(레이어 나누기 위한 블럭state), 이름, state머신
+        self.oretype = oretype
+        self.x = x
+        self.y = y
         self.state_machine = StateMachine(self)
         self.name = name
-        self.price = price
+        self.layer = Layer(2)
         self.state_machine.start(Idle)
         self.state_machine.set_transitions(
             {
-                Idle: {},
+                Idle: { on_conveyor : Move },
+                Move: { leave_conveyor : Idle}
             }
-        )  # dict전달 #함수이름이 똑같아야함 time_out,space_down
+        )
+        if self.oretype == Items(1):
+            self.image = load_image("Resource/item-beryllium.png")
+        elif self.oretype == Items(2):
+            self.image = load_image("Resource/item-coal.png")
+        elif self.oretype == Items(3):
+            self.image = load_image("Resource/item-copper.png")
+        elif self.oretype == Items(4):
+            self.image = load_image("Resource/item-pyratite.png")
+        elif self.oretype == Items(5):
+            self.image = load_image("Resource/item-titanium.png")
+        elif self.oretype == Items(6):
+            self.image = load_image("Resource/item-tungsten.png")
+
     def update(self):
         self.state_machine.update()
 
@@ -53,3 +79,7 @@ class Oreitem:
 
     def draw(self):
         self.state_machine.draw()
+
+    def move(self,x,y):
+        self.x += x
+        self.y += y

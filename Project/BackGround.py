@@ -1,6 +1,6 @@
 from pico2d import load_image
 
-from Project.BlockState import BlockState
+from Project.enum_define import Layer
 
 
 class BackGround:
@@ -10,7 +10,7 @@ class BackGround:
         self.width = 3200
         self.height = 2400
         self.image = load_image("Resource\\Red_Sandstone.png")
-        self.state = BlockState.backGround
+        self.layer = Layer.backGround
     def update(self):
         pass
     def draw(self):

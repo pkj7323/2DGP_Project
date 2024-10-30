@@ -37,8 +37,9 @@ class TileMapManager:
         self.rad = 0
     def click(self, x, y, camera):#block_state == type(BlockState)
 
-        center_x, center_y = self.grid.adjust_to_nearest_center(x + camera.x, y + camera.y)
+
         tile_x, tile_y = self.grid.adjust_to_nearest_center(x,y)
+        center_x, center_y = self.grid.adjust_to_nearest_center(x + camera.x, y + camera.y)
         #마우스 위치보정하는 코드
 
         if self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip, self.rad), self.state):
@@ -70,7 +71,7 @@ class TileMapManager:
             else:
                 pass
         elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
-            self.remove_click(event.x, (get_canvas_height() - event.y), camera_instance,world)
+            self.remove_click(event.x, (get_canvas_height() - event.y), camera_instance, world)
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_F8:
                 self.save(world, 'tiles.txt', 0)

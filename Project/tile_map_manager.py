@@ -1,9 +1,9 @@
 import enum
 import math
 
-from Project.BlockState import BlockState
+from Project.BlockState import BlockState, Blocks
+from Project.conveyor_tile import ConveyorTile
 from Project.tile_map import TileMap
-from tile_map import Blocks
 from pico2d import *
 from Grid import *
 
@@ -44,7 +44,11 @@ class TileMapManager:
 
         if self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip, self.rad), self.state):
             self.grid.mark_center_used((center_x, center_y, self.nowBlocks.value, self.flip, self.rad), self.state)
-            new_tile = TileMap(tile_x, tile_y,camera.x, camera.y, self.state, self.nowBlocks, self.flip, self.rad)
+            new_tile = TileMap()
+            if self.nowBlocks.value == Blocks.wall.value:
+                new_tile = TileMap(tile_x, tile_y,camera.x, camera.y, self.state, self.nowBlocks, self.flip, self.rad)
+            elif self.nowBlocks.value == Blocks.conveyor.value:
+                new_tile = ConveyorTile(tile_x, tile_y, camera.x, camera.y, self.state, self.nowBlocks, self.flip, self.rad)
             new_tile.loadImage()
             return new_tile
         else:
@@ -54,7 +58,7 @@ class TileMapManager:
         tile_x, tile_y = self.grid.adjust_to_nearest_center(x, y)
         # 마우스 위치보정하는 코드
         for o in world[self.state.value]:
-            if o.x == tile_x and o.y == tile_y:
+            if o.x == tile_x and o.y == tile_y and o.blocks.value == self.nowBlocks.value:
                 world[self.state.value].remove(o)
                 break
         if not self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip, self.rad),
@@ -92,20 +96,21 @@ class TileMapManager:
 
         for line in tiles.readlines():
             values = line.strip().split(',')
-
             # 각 값을 적절한 타입으로 변환
 
             x = int(values[0])  # 첫 번째 값: 정수
             y = int(values[1])  # 두 번째 값: 정수
-            image = Blocks(int(values[2]))  # 세 번째 값: 정수
+            image = Blocks(int(values[2]))  # 세 번째 값: 정수 각각 타일의 이름 Blocks의 저장됨
             flip = values[3] # 네 번째 값: 문자열 또는 None
             rad = float(values[4])  # 다섯 번째 값: 부동소수점 수
             state=BlockState.BlockState(int(values[5]))  # 여섯 번째 값: 정수
 
-
-
-            tile_map = TileMap(x, y, 0, 0, state, image, flip, rad)
-            self.grid.mark_center_used((x, y, image.value, flip, rad), state) #파일에서 타일 불러올때 그리드에도 업데이트를 함
+            tile_map = TileMap()
+            if image.value == Blocks.wall.value:
+                tile_map = TileMap(x, y, 0, 0, state, image, flip, rad)
+            elif image.value == Blocks.conveyor.value:
+                tile_map = ConveyorTile(x, y, 0, 0, state, image, flip, rad)
+            self.grid.mark_center_used((x, y, image.value, flip, rad), state) # 파일에서 타일 불러올때 그리드에도 업데이트를 함
             tile_map.loadImage()
             world.append(tile_map)
         return world

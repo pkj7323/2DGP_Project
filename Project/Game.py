@@ -67,12 +67,7 @@ def render_world():
     clear_canvas()
     for i in range(BlockState.end.value):
         for o in world[i]:
-            if isinstance(o,TileMap):
-                if Camera_Instance.is_obj_in_camera(o):
-                    o.draw()
-                    # 창을 넘어간 객체는 그리지 않음
-            else:
-                o.draw()
+            o.draw()
     cursor.draw()
     update_canvas()
 

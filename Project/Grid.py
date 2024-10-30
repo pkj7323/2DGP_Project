@@ -3,7 +3,6 @@ class Grid:
     def __init__(self, cell_size):
         self.cell_size = cell_size
         self.used_centers = [set() for i in range(BlockState.BlockState.end.value)]
-
     def adjust_to_nearest_center(self, x, y):
         grid_x = (x // self.cell_size) * self.cell_size + self.cell_size // 2
         grid_y = (y // self.cell_size) * self.cell_size + self.cell_size // 2
@@ -14,3 +13,5 @@ class Grid:
 
     def mark_center_used(self, center, block_state):#block_state == type(BlockState)
         self.used_centers[block_state.value].add(center)
+    def remove_center_used(self, center, block_state):
+        self.used_centers[block_state.value].remove(center)

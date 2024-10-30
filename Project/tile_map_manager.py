@@ -81,9 +81,13 @@ class TileMapManager:
             elif event.key == SDLK_F9:
                 self.save(world, 'tiles.txt', 1)
             elif event.key == SDLK_e:
-                self.rad += math.radians(90)
-            elif event.key == SDLK_q:
                 self.rad += math.radians(-90)
+                if self.rad <= math.radians(-360):
+                    self.rad = 0
+            elif event.key == SDLK_q:
+                self.rad += math.radians(90)
+                if self.rad >= math.radians(360):
+                    self.rad = 0
             elif event.key == SDLK_1:
                 self.nowBlocks = Blocks.conveyor
 

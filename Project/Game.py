@@ -1,5 +1,6 @@
 from pico2d import *
 
+
 from BackGround import *
 from Camera import Camera
 from Project.Oreitem import Oreitem
@@ -53,9 +54,8 @@ def reset_world():
 
     tile_map_instance.open_tile('tiles.txt',world)
 
-
-
     cursor.image=load_image('Resource/cursor.png')
+
 
 
 def update_world():
@@ -73,6 +73,11 @@ def render_world():
         for o in world[i]:
             o.draw()
     cursor.draw()
+    font = Font('Resource/KCC_dodaumdodaum.ttf', 20)
+    font.draw(0,get_canvas_height() - 10,"자원 현황",(255,255,255))
+    font.draw(0,get_canvas_height() - 30,"자원",(255,255,255))
+
+
     update_canvas()
 
 def destroy(): # finalization code

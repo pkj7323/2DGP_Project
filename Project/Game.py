@@ -8,7 +8,7 @@ from Project.enum_define import Layer, Items
 from Project.MouseIcon import MouseIcon
 import game_world
 import tile_map_manager
-
+import conveyor_tile
 # Game object class here
 
 Camera_Instance = Camera()

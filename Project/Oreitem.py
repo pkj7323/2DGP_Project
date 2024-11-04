@@ -16,8 +16,8 @@ class Move:
     @staticmethod
     def do(ore):
 
-        ore.x += ore.dir_x * 1
-        ore.y += ore.dir_y * 1
+        ore.x += ore.dir_x * 0.5
+        ore.y += ore.dir_y * 0.5
 
         ore.timer = 0
         if ore.timer < 100:
@@ -78,8 +78,8 @@ class Oreitem:
         self.state_machine.start(Idle)
         self.state_machine.set_transitions(
             {
-                Idle: { on_conveyor : Move },
-                Move: { leave_conveyor : Idle}
+                Idle: { on_conveyor : Move ,leave_conveyor : Idle},
+                Move: { leave_conveyor : Idle, on_conveyor : Move},
             }
         )
         if self.oretype == Items(1):
@@ -123,3 +123,4 @@ class Oreitem:
                 return
 
         self.state_machine.add_event(('LEAVE_CONVEYOR',0))
+        self.dir_x, self.dir_y = 0,0

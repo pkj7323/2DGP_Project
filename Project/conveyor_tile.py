@@ -4,11 +4,12 @@ from Project.tile_map import TileMap
 from pico2d import *
 from enum_define import Layer
 from enum_define import Blocks
+
+
 class ConveyorTile(TileMap):
     frameMax = 4
     speed = 0.1
     deltaFrame = 0.0
-    frame = 0
     offset = 32
     tile_pixel_size = 32
     dir_x, dir_y = 1, 0

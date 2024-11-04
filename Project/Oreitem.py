@@ -31,7 +31,7 @@ class Move:
         ore.collision_check()
     @staticmethod
     def draw(ore):
-        ore.image.draw(ore.x, ore.y, 16, 16)
+        ore.image.draw(ore.x, ore.y, ore.size, ore.size)
 class Idle:
     @staticmethod
     def enter(ore, e):
@@ -60,13 +60,14 @@ class Idle:
     def draw(ore):
         #left, bottom, width, height, x, y, w = None, h = None
         #draw(self, x, y, w=None, h=None):
-        ore.image.draw(ore.x, ore.y, 16, 16)
+        ore.image.draw(ore.x, ore.y, ore.size, ore.size)
 
 
 class Oreitem:
     image = None
     pixel_size = 32
     dir_x,dir_y = 0,0
+    size = 16
     def __init__(self, name, x, y, oretype = Items(1)):
         #필요한거: 위치, 이미지, state(레이어 나누기 위한 블럭state), 이름, state머신
         self.oretype = oretype
@@ -117,10 +118,10 @@ class Oreitem:
                 conveyor_list.append(o)
 
         for conveyor in conveyor_list:
-            if conveyor.x + conveyor.size > self.x > conveyor.x - conveyor.size and conveyor.y + conveyor.size > self.y > conveyor.y - conveyor.size:
+            if (conveyor.x + conveyor.size >= self.x + self.size/2 >= conveyor.x
+                    and conveyor.y + conveyor.size >= self.y + self.size/2 >= conveyor.y):
                 self.state_machine.add_event(('ON_CONVEYOR',0))
                 self.dir_x,self.dir_y = conveyor.dir_x,conveyor.dir_y
                 return
 
         self.state_machine.add_event(('LEAVE_CONVEYOR',0))
-        self.dir_x, self.dir_y = 0,0

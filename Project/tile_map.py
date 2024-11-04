@@ -11,7 +11,7 @@ class TileMap:
     blocks = Blocks(1)
 
     def __init__(self, x=0, y=0, camera_x=0, camera_y=0, layer = Layer(1), blocks = Blocks(1)
-                 , flip='', rad=0.0):
+                 , flip='', degree=0):
         self.x = x # 카메라 기준 상대적 현재 좌표
         self.y = y # 카메라 기준 상대적 현재 좌표
         self.adjust_x = camera_x + self.x # 월드 기준 절대 좌표
@@ -19,13 +19,13 @@ class TileMap:
         self.blocks = blocks
         self.layer = layer
         self.flip = flip
-        self.rad = rad
+        self.degree = degree
 
     def draw(self):
         if self.image is None:
             return
         self.image.clip_composite_draw(self.frame * self.offset, 0, self.tile_pixel_size, self.tile_pixel_size,
-                                       self.rad, self.flip, self.x, self.y, self.size, self.size)
+                                       math.radians(self.degree), self.flip, self.x, self.y, self.size, self.size)
     def update(self):
         pass
     def move(self,x,y):

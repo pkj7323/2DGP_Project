@@ -29,8 +29,8 @@ def handle_events():
             running = False
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             running = False
-        elif event.type == SDL_KEYDOWN and event.key == SDLK_TAB:
-            ore = Oreitem('beryllium_ore',10,10,Items(1))
+        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
+            ore = Oreitem('beryllium_ore',event.x, (get_canvas_height() - event.y),Items(1))
             game_world.add_object(ore,Layer.ore)
         else:
             Camera_Instance.handle_event(event)

@@ -35,20 +35,20 @@ class TileMapManager:
         self.layer = Layer(1)
         self.nowBlocks = Blocks(1)
         self.flip = ''
-        self.rad = 0
+        self.degree = 0
     def click(self, x, y, camera):#block_state == type(BlockState)
 
         tile_x, tile_y = self.grid.adjust_to_nearest_center(x,y)
         center_x, center_y = self.grid.adjust_to_nearest_center(x + camera.x, y + camera.y)
         #마우스 위치보정하는 코드
 
-        if self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip, self.rad), self.layer):
-            self.grid.mark_center_used((center_x, center_y, self.nowBlocks.value, self.flip, self.rad), self.layer)
+        if self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip, self.degree), self.layer):
+            self.grid.mark_center_used((center_x, center_y, self.nowBlocks.value, self.flip, self.degree), self.layer)
             new_tile = TileMap()
             if self.nowBlocks.value == Blocks.wall.value:
-                new_tile = TileMap(tile_x, tile_y,camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.rad)
+                new_tile = TileMap(tile_x, tile_y,camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             elif self.nowBlocks.value == Blocks.conveyor.value:
-                new_tile = ConveyorTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.rad)
+                new_tile = ConveyorTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             new_tile.loadImage()
             return new_tile
         else:
@@ -62,9 +62,10 @@ class TileMapManager:
                 game_world.remove_object(o)
                 break
             print('삭제 안된듯')
-        if not self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip, self.rad),
-                                             self.layer):
-            self.grid.remove_center_used((center_x, center_y, self.nowBlocks.value, self.flip, self.rad), self.layer)
+        if not self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip
+                                              , self.degree), self.layer):
+            self.grid.remove_center_used((center_x, center_y, self.nowBlocks.value, self.flip
+                                          , self.degree), self.layer)
 
     def handle_event(self, event, camera_instance):
         if event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
@@ -83,13 +84,13 @@ class TileMapManager:
             elif event.key == SDLK_F9:
                 self.save('tiles.txt', 1)
             elif event.key == SDLK_e:
-                self.rad += math.radians(-90)
-                if self.rad <= math.radians(-360):
-                    self.rad = 0
+                self.degree += 90
+                if self.degree >= 360:
+                    self.degree = 0
             elif event.key == SDLK_q:
-                self.rad += math.radians(90)
-                if self.rad >= math.radians(360):
-                    self.rad = 0
+                self.degree -= 90
+                if self.degree <= -360:
+                    self.degree = 0
             elif event.key == SDLK_1:
                 self.nowBlocks = Blocks.conveyor
 
@@ -106,15 +107,15 @@ class TileMapManager:
             y = int(values[1])  # 두 번째 값: 정수
             image = Blocks(int(values[2]))  # 세 번째 값: 정수 각각 타일의 이름 Blocks의 저장됨
             flip = values[3] # 네 번째 값: 문자열 또는 None
-            rad = float(values[4])  # 다섯 번째 값: 부동소수점 수
+            degree = int(values[4])  # 다섯 번째 값: 부동소수점 수
             layer=Layer(int(values[5]))  # 여섯 번째 값: 정수
 
             tile_map = TileMap()
             if image.value == Blocks.wall.value:
-                tile_map = TileMap(x, y, 0, 0, layer, image, flip, rad)
+                tile_map = TileMap(x, y, 0, 0, layer, image, flip, degree)
             elif image.value == Blocks.conveyor.value:
-                tile_map = ConveyorTile(x, y, 0, 0, layer, image, flip, rad)
-            self.grid.mark_center_used((x, y, image.value, flip, rad), layer) # 파일에서 타일 불러올때 그리드에도 업데이트를 함
+                tile_map = ConveyorTile(x, y, 0, 0, layer, image, flip, degree)
+            self.grid.mark_center_used((x, y, image.value, flip, degree), layer) # 파일에서 타일 불러올때 그리드에도 업데이트를 함
             tile_map.loadImage()
             game_world.add_object(tile_map, layer)
 

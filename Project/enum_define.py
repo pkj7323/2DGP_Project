@@ -10,6 +10,7 @@ class Layer(enum.Enum):
 class Blocks(enum.Enum):
     wall = 1
     conveyor = 2
+    beryllium_ore = 3
 
 class Items(enum.Enum):
     beryllium = 1

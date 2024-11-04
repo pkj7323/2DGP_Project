@@ -8,7 +8,6 @@ class TileMap:
     tile_pixel_size = 64
     frame = 0
     offset = 0
-    blocks = Blocks(1)
 
     def __init__(self, x=0, y=0, camera_x=0, camera_y=0, layer = Layer(1), blocks = Blocks(1)
                  , flip='', degree=0):
@@ -20,6 +19,11 @@ class TileMap:
         self.layer = layer
         self.flip = flip
         self.degree = degree
+        if self.image is None:
+            if self.blocks.value == Layer.tile.value:
+                self.image = load_image('Resource/tile1.png')
+            else:
+                self.image = load_image('Resource/error.png')
 
     def draw(self):
         if self.image is None:
@@ -31,11 +35,3 @@ class TileMap:
     def move(self,x,y):
         self.x += x
         self.y += y
-    def loadImage(self):
-        if self.image is None:
-            if self.blocks.value == Layer.tile.value:
-                self.image = load_image('Resource/tile1.png')
-            else:
-                self.image = load_image('Resource/error.png')
-        else:
-            pass

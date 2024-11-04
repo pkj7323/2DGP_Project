@@ -6,6 +6,7 @@ from Project.conveyor_tile import ConveyorTile
 from Project.tile_map import TileMap
 from pico2d import *
 from Grid import *
+import game_world
 
 
 def save_no_duplication(path):
@@ -52,34 +53,35 @@ class TileMapManager:
             return new_tile
         else:
             return None
-    def remove_click(self,x,y,camera,world):
+    def remove_click(self,x,y,camera):
         center_x, center_y = self.grid.adjust_to_nearest_center(x + camera.x, y + camera.y)
         tile_x, tile_y = self.grid.adjust_to_nearest_center(x, y)
         # 마우스 위치보정하는 코드
-        for o in world[self.layer.value]:
+        for o in game_world.get_world()[self.layer.value]:
             if o.x == tile_x and o.y == tile_y and o.blocks.value == self.nowBlocks.value:
-                world[self.layer.value].remove(o)
+                game_world.remove_object(o)
                 break
+            print('삭제 안된듯')
         if not self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip, self.rad),
                                              self.layer):
             self.grid.remove_center_used((center_x, center_y, self.nowBlocks.value, self.flip, self.rad), self.layer)
 
-    def handle_event(self, event, world, camera_instance):
+    def handle_event(self, event, camera_instance):
         if event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
             new_tile = self.click(event.x, (get_canvas_height() - event.y),
                                   camera_instance)
             if new_tile is not None:#is와 is not은 객체끼리 비교함 값이 같아도 다르게 비교함
                 # 값끼리 비교하는 거면 원래 비교연산자 써야됨 주의주의
-                world[self.layer.value].append(new_tile)
+                game_world.add_object(new_tile, self.layer)
             else:
                 pass
         elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
-            self.remove_click(event.x, (get_canvas_height() - event.y), camera_instance, world)
+            self.remove_click(event.x, (get_canvas_height() - event.y), camera_instance)
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_F8:
-                self.save(world, 'tiles.txt', 0)
+                self.save('tiles.txt', 0)
             elif event.key == SDLK_F9:
-                self.save(world, 'tiles.txt', 1)
+                self.save('tiles.txt', 1)
             elif event.key == SDLK_e:
                 self.rad += math.radians(-90)
                 if self.rad <= math.radians(-360):
@@ -93,7 +95,7 @@ class TileMapManager:
 
             # 타일맵 추가저장
 
-    def open_tile(self,path,world):
+    def open_tile(self,path):
         tiles = open(path, 'r')
 
         for line in tiles.readlines():
@@ -114,16 +116,11 @@ class TileMapManager:
                 tile_map = ConveyorTile(x, y, 0, 0, layer, image, flip, rad)
             self.grid.mark_center_used((x, y, image.value, flip, rad), layer) # 파일에서 타일 불러올때 그리드에도 업데이트를 함
             tile_map.loadImage()
-            world[layer.value].append(tile_map)
+            game_world.add_object(tile_map, layer)
 
-    def save(self,world, path, mode):
+    def save(self, path, mode):
         if mode == 0:
-            f = open(path, 'a')
-            for i in range(Layer.end.value):
-                for o in world[i]:
-                    if isinstance(o, TileMap):
-                        f.write(f'{o.adjust_x},{o.adjust_y},{o.blocks.value},{o.layer.value}\n')
-            f.close()
+            pass
         elif mode == 1:
             f = open(path, 'w')
             i = 0

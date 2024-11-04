@@ -1,8 +1,10 @@
-from pico2d import load_image
+from lib2to3.btm_utils import reduce_tree
 
-from Project.enum_define import Layer, Items
+from pico2d import load_image, get_time
+
+from Project.enum_define import Layer, Items, Blocks
 from Project.state_machine import StateMachine, on_conveyor, leave_conveyor
-
+import game_world
 
 class Move:
     @staticmethod
@@ -13,15 +15,27 @@ class Move:
         pass
     @staticmethod
     def do(ore):
-        #ore.state_machine.add_event(('ON_CONVEYOR', 0))
-        pass
+
+        ore.x += ore.dir_x * 1
+        ore.y += ore.dir_y * 1
+
+        ore.timer = 0
+        if ore.timer < 100:
+            ore.y -= 0.001
+            ore.timer += 1
+        elif ore.timer < 200:
+            ore.y += 0.001
+            ore.timer += 1
+        else:
+            ore.timer = 0
+        ore.collision_check()
     @staticmethod
     def draw(ore):
-        pass
+        ore.image.draw(ore.x, ore.y, 16, 16)
 class Idle:
     @staticmethod
     def enter(ore, e):
-        pass
+        ore.dir_x , ore.dir_y = 0, 0
 
     @staticmethod
     def exit(ore, e):
@@ -29,7 +43,18 @@ class Idle:
 
     @staticmethod
     def do(ore):
-        pass
+
+        ore.timer = 0
+        if ore.timer < 100:
+            ore.y -= 0.001
+            ore.timer += 1
+        elif ore.timer < 200:
+            ore.y += 0.001
+            ore.timer += 1
+        else:
+            ore.timer = 0
+
+        ore.collision_check()
 
     @staticmethod
     def draw(ore):
@@ -41,6 +66,7 @@ class Idle:
 class Oreitem:
     image = None
     pixel_size = 32
+    dir_x,dir_y = 0,0
     def __init__(self, name, x, y, oretype = Items(1)):
         #필요한거: 위치, 이미지, state(레이어 나누기 위한 블럭state), 이름, state머신
         self.oretype = oretype
@@ -83,3 +109,17 @@ class Oreitem:
     def move(self,x,y):
         self.x += x
         self.y += y
+
+    def collision_check(self):
+        conveyor_list = []
+        for o in game_world.get_world()[Layer.tile.value]:
+            if o.blocks == Blocks.conveyor:
+                conveyor_list.append(o)
+
+        for conveyor in conveyor_list:
+            if conveyor.x + conveyor.size > self.x > conveyor.x - conveyor.size and conveyor.y + conveyor.size > self.y > conveyor.y - conveyor.size:
+                self.state_machine.add_event(('ON_CONVEYOR',0))
+                self.dir_x,self.dir_y = conveyor.dir_x,conveyor.dir_y
+                return
+
+        self.state_machine.add_event(('LEAVE_CONVEYOR',0))

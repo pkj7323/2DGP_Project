@@ -1,7 +1,7 @@
 from pico2d import *
 
 from Project.enum_define import Layer
-
+import game_world
 
 class Camera:
     def __init__(self):
@@ -37,12 +37,12 @@ class Camera:
             elif event.key == SDLK_UP:
                 self.dir_y += -1
 
-    def move(self, world):
+    def move(self):
         tempx = self.x + 20 * self.dir_x
         tempy = self.y + 20 * self.dir_y
         doMove = True
-        print(self.x, self.y)
-        background = world[Layer.backGround.value][0]
+        #print(self.x, self.y)
+        background = game_world.get_world()[Layer.backGround.value][0]
 
         if ((tempx >= background.width / 2 - self.width) or (tempy >= background.height / 2 - self.height)
             or (tempx <= -(background.width / 2 - self.width))) or (tempy <= -(background.height / 2 - self.height)):
@@ -53,8 +53,8 @@ class Camera:
         if doMove:
             self.x += 20 * self.dir_x
             self.y += 20 * self.dir_y
-            for i in range(Layer.end.value):
-                for o in world[i]:
+            for layer in range(Layer.end.value):
+                for o in game_world.get_world()[layer]:
                     if (o.layer.value == Layer.mouse.value):
                         continue
                     o.move(-20 * self.dir_x, -20 * self.dir_y)

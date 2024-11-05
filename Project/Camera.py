@@ -1,5 +1,6 @@
 from pico2d import *
 
+from Project import game_framework
 from Project.enum_define import Layer
 import game_world
 
@@ -41,14 +42,25 @@ class Camera:
         tempx = self.x + 20 * self.dir_x
         tempy = self.y + 20 * self.dir_y
         doMove = True
-        #print(self.x, self.y)
+        print(self.x, self.y)
         background = game_world.get_world()[Layer.backGround.value][0]
 
-        if ((tempx >= background.width / 2 - self.width) or (tempy >= background.height / 2 - self.height)
-            or (tempx <= -(background.width / 2 - self.width))) or (tempy <= -(background.height / 2 - self.height)):
+        camera_center_x = tempx + self.width / 2
+        camera_center_y = tempy + self.height / 2
+        if ((camera_center_x - self.width / 2 <= -background.width / 2)
+            or (camera_center_y - self.height / 2 <= -background.height / 2)
+            or (camera_center_x + self.width / 2 >= background.width / 2)
+            or (camera_center_y + self.height / 2 >= background.height / 2)):
             doMove = False
         else:
             doMove = True
+
+
+        # if ((tempx >= background.width / 2 - self.width) or (tempy >= background.height / 2 - self.height)
+        #     or (tempx <= -(background.width / 2 - self.width))) or (tempy <= -(background.height / 2 - self.height)):
+        #     doMove = False
+        # else:
+        #     doMove = True
 
         if doMove:
             self.x += 20 * self.dir_x

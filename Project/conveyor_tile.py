@@ -4,11 +4,11 @@ from Project.tile_map import TileMap
 from pico2d import *
 from enum_define import Layer
 from enum_define import Blocks
-
+import game_framework
 
 class ConveyorTile(TileMap):
     frameMax = 4
-    speed = 0.1
+    speed = 10
     deltaFrame = 0.0
     offset = 32
     tile_pixel_size = 32
@@ -26,7 +26,7 @@ class ConveyorTile(TileMap):
         elif degree == 180 or degree == -180:
             self.dir_x, self.dir_y = -1, 0
     def update(self):
-        self.deltaFrame += self.speed
+        self.deltaFrame += self.speed * game_framework.frame_time
         if self.frameMax != 0:
             self.frame = int(self.frame + self.deltaFrame) % (self.frameMax)
         if self.deltaFrame >= 1:

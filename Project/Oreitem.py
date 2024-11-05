@@ -1,4 +1,4 @@
-from lib2to3.btm_utils import reduce_tree
+import game_framework
 
 from pico2d import load_image, get_time
 
@@ -16,8 +16,8 @@ class Move:
     @staticmethod
     def do(ore):
 
-        ore.x += ore.dir_x * 0.5
-        ore.y += ore.dir_y * 0.5
+        ore.x += ore.dir_x * 10 * game_framework.frame_time
+        ore.y += ore.dir_y * 10 * game_framework.frame_time
 
         ore.timer = 0
         if ore.timer < 100:

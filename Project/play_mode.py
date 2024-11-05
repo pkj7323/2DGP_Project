@@ -1,6 +1,6 @@
 from pico2d import *
 
-
+import milestone_mode
 from BackGround import *
 from Camera import Camera
 from Project.Oreitem import Oreitem
@@ -8,30 +8,32 @@ from Project.enum_define import Layer, Items
 from Project.MouseIcon import MouseIcon
 import game_world
 import tile_map_manager
-import conveyor_tile
+import game_framework
 # Game object class here
 
 Camera_Instance = Camera()
 tile_map_instance = tile_map_manager.TileMapManager()
 cursor = MouseIcon()
-running = True
+
 
 
 
 
 def handle_events():
-    global running
+
     global Camera_Instance
 
     events = get_events()
     for event in events:
         if event.type == SDL_QUIT:
-            running = False
+            game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
-            running = False
-        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
-            ore = Oreitem('beryllium_ore',event.x, (get_canvas_height() - event.y),Items(1))
-            game_world.add_object(ore,Layer.ore)
+            game_framework.quit()
+        elif event.type == SDL_KEYDOWN and event.key == SDLK_i:
+            game_framework.push_mode(milestone_mode)
+        # elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
+        #     ore = Oreitem('beryllium_ore',event.x, (get_canvas_height() - event.y),Items(1))
+        #     game_world.add_object(ore,Layer.ore)
         else:
             Camera_Instance.handle_event(event)
             tile_map_instance.handle_event(event, Camera_Instance)
@@ -40,12 +42,11 @@ def handle_events():
             pass
 
 
-def reset_world():
+def init():
     global running
     global Camera_Instance
     global cursor
     Camera_Instance = Camera()
-    running = True
     background = BackGround()
     game_world.add_object(background,Layer.backGround)
 
@@ -55,45 +56,48 @@ def reset_world():
 
 
 
-def update_world():
+def update():
     global Camera_Instance
     cursor.update()
     game_world.update()
     Camera_Instance.move()
 
 
-def render_world():
+def draw():
     clear_canvas()
     game_world.draw()
     cursor.draw()
-    font = Font('Resource/KCC_dodaumdodaum.ttf', 20)
-    font.draw(0,get_canvas_height() - 10,"자원 현황",(255,255,255))
-    font.draw(0,get_canvas_height() - 30,"자원",(255,255,255))
-
+    # font = Font('Resource/KCC_dodaumdodaum.ttf', 20)
+    # font.draw(0,get_canvas_height() - 10,"자원 현황",(255,255,255))
+    # font.draw(0,get_canvas_height() - 30,"자원",(255,255,255))
 
     update_canvas()
 
-def destroy(): # finalization code
+def finish(): # finalization code
     tile_map_manager.save_no_duplication('tiles.txt')
-    close_canvas()
+    #close_canvas()
+
+def pause():
+    pass
+
+def resume():
+    pass
 
 
 
 
 
 
-
-
-open_canvas()
-hide_cursor()
-reset_world()
-
-# game loop
-while running:
-    handle_events()
-    update_world()
-    render_world()
-    delay(0.01)
-
-
-destroy()
+# open_canvas()
+# hide_cursor()
+# reset_world()
+#
+# # game loop
+# while running:
+#     handle_events()
+#     update_world()
+#     render_world()
+#     delay(0.01)
+#
+#
+# destroy()

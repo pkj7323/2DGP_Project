@@ -44,10 +44,10 @@ class StateMachine:
             for check_event , next_state in  self.transitions[self.cur_state].items():
                                             #트렌지션 테이블을 확인했는데 table에 키가 없으면 오류 발생
                 if check_event(e): # 내가 원하는 상태에서
-                    print(f'Exit from  {self.cur_state}')# 테이블을 잘 썻는가?
+                    #print(f'Exit from  {self.cur_state}')# 테이블을 잘 썻는가?
                     self.cur_state.exit(self.obj,e) # 이벤트를 알려줘야함
                     self.cur_state = next_state
-                    print(f'Enter into {self.cur_state}')# 테이블을 잘 썻는가?
+                    #print(f'Enter into {self.cur_state}')# 테이블을 잘 썻는가?
                     self.cur_state.enter(self.obj,e)
                     return # 제대로 이벤트에 따른 상태변환 완료
             #이 시점에 도달하는 것은 event에 따른 전환을 못함

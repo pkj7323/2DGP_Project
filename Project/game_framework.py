@@ -2,6 +2,7 @@ import time
 running = None
 stack = None
 frame_time = 0.0
+#프레임 워크를 다른 디렉토리로 옮기면 각각다른 게임프레임워크를 가지게됨 왜지?
 
 def change_mode(mode):
     global stack

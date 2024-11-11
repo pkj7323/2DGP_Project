@@ -39,10 +39,11 @@ class Camera:
                 self.dir_y += -1
 
     def move(self):
-        tempx = self.x + 20 * self.dir_x
-        tempy = self.y + 20 * self.dir_y
+        #TODO: 카메라 움직임이 이상함 현재위치 방향 속력으로 움직이게 해야됨
+        tempx = self.x + 20 * self.dir_x * game_framework.frame_time
+        tempy = self.y + 20 * self.dir_y * game_framework.frame_time
         doMove = True
-        print(self.x, self.y)
+
         background = game_world.get_world()[Layer.backGround.value][0]
 
         camera_center_x = tempx + self.width / 2
@@ -63,8 +64,9 @@ class Camera:
         #     doMove = True
 
         if doMove:
-            self.x += 20 * self.dir_x
-            self.y += 20 * self.dir_y
+            print(self.x, self.y)
+            self.x += 20 * self.dir_x * game_framework.frame_time
+            self.y += 20 * self.dir_y * game_framework.frame_time
             for layer in range(Layer.end.value):
                 for o in game_world.get_world()[layer]:
                     if (o.layer.value == Layer.mouse.value):

@@ -1,6 +1,6 @@
 import game_framework
 
-from pico2d import load_image, get_time
+from pico2d import load_image, get_time, draw_rectangle
 
 from Project.enum_define import Layer, Items, Blocks
 from Project.state_machine import StateMachine, on_conveyor, leave_conveyor
@@ -15,20 +15,9 @@ class Move:
         pass
     @staticmethod
     def do(ore):
+        ore.x += ore.dir_x * ore.speed * game_framework.frame_time
+        ore.y += ore.dir_y * ore.speed * game_framework.frame_time
 
-        ore.x += ore.dir_x * 10 * game_framework.frame_time
-        ore.y += ore.dir_y * 10 * game_framework.frame_time
-
-        ore.timer = 0
-        if ore.timer < 100:
-            ore.y -= 0.001
-            ore.timer += 1
-        elif ore.timer < 200:
-            ore.y += 0.001
-            ore.timer += 1
-        else:
-            ore.timer = 0
-        ore.collision_check()
     @staticmethod
     def draw(ore):
         ore.image.draw(ore.x, ore.y, ore.size, ore.size)
@@ -43,18 +32,7 @@ class Idle:
 
     @staticmethod
     def do(ore):
-
-        ore.timer = 0
-        if ore.timer < 100:
-            ore.y -= 0.001
-            ore.timer += 1
-        elif ore.timer < 200:
-            ore.y += 0.001
-            ore.timer += 1
-        else:
-            ore.timer = 0
-
-        ore.collision_check()
+        pass
 
     @staticmethod
     def draw(ore):
@@ -70,11 +48,13 @@ class Oreitem:
     size = 16
     def __init__(self, name, x, y, oretype = Items(1)):
         #필요한거: 위치, 이미지, state(레이어 나누기 위한 블럭state), 이름, state머신
+        self.colliding = False
         self.oretype = oretype
         self.x = x
         self.y = y
         self.state_machine = StateMachine(self)
         self.name = name
+        self.speed = 10
         self.layer = Layer(2)
         self.state_machine.start(Idle)
         self.state_machine.set_transitions(
@@ -98,6 +78,7 @@ class Oreitem:
 
     def update(self):
         self.state_machine.update()
+        self.check_collision_end()
 
     def handle_event(self, event):
         #event : 입력 이벤트
@@ -106,22 +87,35 @@ class Oreitem:
 
     def draw(self):
         self.state_machine.draw()
+        draw_rectangle(*self.get_bb())
 
     def move(self,x,y):
         self.x += x
         self.y += y
 
-    def collision_check(self):
-        conveyor_list = []
-        for o in game_world.get_world()[Layer.tile.value]:
-            if o.blocks == Blocks.conveyor:
-                conveyor_list.append(o)
+    def check_collision_end(self):
+        if self.colliding:
+            self.handle_collision_end()
 
-        for conveyor in conveyor_list:
-            if (conveyor.x + conveyor.size >= self.x + self.size/2 >= conveyor.x
-                    and conveyor.y + conveyor.size >= self.y + self.size/2 >= conveyor.y):
-                self.state_machine.add_event(('ON_CONVEYOR',0))
-                self.dir_x,self.dir_y = conveyor.dir_x,conveyor.dir_y
-                return
+    def get_bb(self):
+        return self.x - self.size/2, self.y + self.size/2, self.x + self.size/2, self.y - self.size/2
 
-        self.state_machine.add_event(('LEAVE_CONVEYOR',0))
+    def check_collision(self,other):
+        if (other.x + other.size >= self.x + self.size / 2 >= other.x
+                and other.y + other.size >= self.y + self.size / 2 >= other.y):
+            return True
+        else:
+            return False
+
+
+    def handle_collision(self, group,other):
+        if group == 'ore:CONVEYOR1':
+            self.state_machine.add_event(('ON_CONVEYOR', 0))
+            self.dir_x, self.dir_y = other.dir_x, other.dir_y
+            self.speed = other.transfer_speed
+        self.colliding = True
+
+
+    def handle_collision_end(self):
+        self.colliding = False
+        self.state_machine.add_event(('LEAVE_CONVEYOR', 0))

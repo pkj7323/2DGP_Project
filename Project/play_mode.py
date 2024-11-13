@@ -31,9 +31,10 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_i:
             game_framework.push_mode(milestone_mode)
-        # elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
-        #     ore = Oreitem('beryllium_ore',event.x, (get_canvas_height() - event.y),Items(1))
-        #     game_world.add_object(ore,Layer.ore)
+        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
+            ore = Oreitem('beryllium_ore',event.x, (get_canvas_height() - event.y),Items(1))
+            game_world.add_object(ore,Layer.ore)
+            game_world.add_collision_pair("ore:CONVEYOR1",ore,None)
         else:
             Camera_Instance.handle_event(event)
             tile_map_instance.handle_event(event, Camera_Instance)
@@ -59,8 +60,9 @@ def init():
 def update():
     global Camera_Instance
     cursor.update()
-    game_world.update()
     Camera_Instance.move()
+    game_world.update()
+    game_world.handle_collision()
 
 
 def draw():

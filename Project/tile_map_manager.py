@@ -50,6 +50,7 @@ class TileMapManager:
                 new_tile = TileMap(tile_x, tile_y,camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             elif self.nowBlocks.value == Blocks.conveyor.value:
                 new_tile = ConveyorTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
+                game_world.add_collision_pair("ore:CONVEYOR1", None, new_tile)
             elif self.nowBlocks.value == Blocks.beryllium_ore.value:
                 new_tile = OreTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             return new_tile
@@ -119,6 +120,7 @@ class TileMapManager:
                 tile_map = TileMap(x, y, 0, 0, layer, image, flip, degree)
             elif image.value == Blocks.conveyor.value:
                 tile_map = ConveyorTile(x, y, 0, 0, layer, image, flip, degree)
+                game_world.add_collision_pair("ore:CONVEYOR1",None,tile_map)
             elif image.value == Blocks.beryllium_ore.value:
                 tile_map = OreTile(x,y,0,0,layer, image, flip, degree)
             self.grid.mark_center_used((x, y, image.value, flip, degree), layer) # 파일에서 타일 불러올때 그리드에도 업데이트를 함

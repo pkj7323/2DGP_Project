@@ -28,7 +28,7 @@ class TileMap:
     def draw(self):
         if self.image is None:
             return
-        self.image.clip_composite_draw(self.frame * self.offset, 0, self.tile_pixel_size, self.tile_pixel_size,
+        self.image.clip_composite_draw(int(self.frame * self.offset), 0, self.tile_pixel_size, self.tile_pixel_size,
                                        math.radians(self.degree), self.flip, self.x, self.y, self.size, self.size)
     def update(self):
         pass

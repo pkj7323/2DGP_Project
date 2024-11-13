@@ -5,6 +5,16 @@ from pico2d import *
 from enum_define import Layer
 from enum_define import Blocks
 import game_framework
+PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
+RUN_SPEED_KMPH = 20.0  # Km / Hour
+RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
+RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
+RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
+
+# conveyor action
+TIME_PER_ACTION = 0.01
+ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
+FRAMES_PER_ACTION = 4
 
 class ConveyorTile(TileMap):
     frameMax = 4
@@ -19,15 +29,37 @@ class ConveyorTile(TileMap):
         self.image = load_image('Resource/conveyor-0-0-Sheet.png')
         if degree == 0 or degree == 360:
             self.dir_x, self.dir_y = 1, 0
+            self.bb_size_x = self.size
+            self.bb_size_y = 0
         elif degree == -90 or degree == 270:
             self.dir_x, self.dir_y = 0, -1
+            self.bb_size_x = 0
+            self.bb_size_y = self.size
         elif degree == 90 or degree == -270:
             self.dir_x, self.dir_y = 0, 1
+            self.bb_size_x = 0
+            self.bb_size_y = self.size
         elif degree == 180 or degree == -180:
             self.dir_x, self.dir_y = -1, 0
+            self.bb_size_x = self.size
+            self.bb_size_y = 0
+
+        self.transfer_speed = 20.0
+        self.colliding = False
+    def draw(self):
+        super().draw()
+        draw_rectangle(*self.get_bb())
     def update(self):
-        self.deltaFrame += self.speed * game_framework.frame_time
-        if self.frameMax != 0:
-            self.frame = int(self.frame + self.deltaFrame) % (self.frameMax)
-        if self.deltaFrame >= 1:
-            self.deltaFrame = 0
+        self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % self.frameMax
+
+
+    def get_bb(self):
+        return self.x - self.bb_size_x/2, self.y + self.bb_size_y/2, self.x + self.bb_size_x/2, self.y - self.bb_size_y/2
+
+    def handle_collision(self, group, other):
+        if group == 'ore:CONVEYOR1':
+            pass
+        self.colliding = True
+
+    def handle_collision_end(self):
+        self.colliding = False

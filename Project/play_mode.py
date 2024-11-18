@@ -6,9 +6,9 @@ from Camera import Camera
 from Project.Oreitem import Oreitem
 from Project.enum_define import Layer, Items
 from Project.MouseIcon import MouseIcon
-import game_world
-import tile_map_manager
-import game_framework
+from Project import game_world
+from Project import tile_map_manager
+from Project import game_framework
 # Game object class here
 
 Camera_Instance = Camera()

@@ -11,7 +11,8 @@ class Layer(enum.Enum):
 class Blocks(enum.Enum):
     wall = 1
     conveyor = 2
-    beryllium_ore = 3
+    drill = 3
+    beryllium_ore = 4
 
 class Items(enum.Enum):
     beryllium = 1

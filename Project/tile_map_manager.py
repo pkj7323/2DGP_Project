@@ -1,13 +1,10 @@
-import enum
-import math
-
 from Project.enum_define import Layer, Blocks
 from Project.conveyor_tile import ConveyorTile
 from ore_tile import OreTile
 from Project.tile_map import TileMap
 from pico2d import *
 from Grid import *
-import game_world
+from Project import game_world
 
 
 def save_no_duplication(path):

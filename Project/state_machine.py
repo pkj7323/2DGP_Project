@@ -6,6 +6,8 @@ def on_conveyor(e):
     return e[0] == 'ON_CONVEYOR'
 def leave_conveyor(e):
     return e[0] == 'LEAVE_CONVEYOR'
+def on_ore(e):
+    return e[0] == 'ON_ORE'
 
 def right_down(e):
     return e[0]=='INPUT' and e[1].type == SDL_KEYDOWN and e[1].key == SDLK_RIGHT

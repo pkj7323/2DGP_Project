@@ -1,20 +1,18 @@
+from pico2d import load_image
 
-from Project.enum_define import Layer
+from Project import game_framework
+from Project.enum_define import Layer, Blocks
 from Project.state_machine import StateMachine
+from Project.tile_map import TileMap
 
-PIXEL_PER_METER = (10.0 / 0.3)  # 10 pixel 30 cm
-RUN_SPEED_KMPH = 20.0  # Km / Hour
-RUN_SPEED_MPM = (RUN_SPEED_KMPH * 1000.0 / 60.0)
-RUN_SPEED_MPS = (RUN_SPEED_MPM / 60.0)
-RUN_SPEED_PPS = (RUN_SPEED_MPS * PIXEL_PER_METER)
 
 # Boy Action Speed
 TIME_PER_ACTION = 0.5
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 8
+FRAMES_PER_ACTION = 2
 
 
-class mine:
+class Mine:
     @staticmethod
     def enter(drill):
         pass
@@ -22,30 +20,48 @@ class mine:
     def exit(drill):
         pass
     @staticmethod
-    def do():
-        pass
+    def do(drill):
+        drill.timer = (drill.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % drill.frameMax
     @staticmethod
     def draw():
         pass
-class Drill:
-    def __init__(self):
-        self.x = 0
-        self.y = 0
-        self.image = None
+class Idle:
+    @staticmethod
+    def enter(drill):
+        pass
+
+    @staticmethod
+    def exit(drill):
+        pass
+
+    @staticmethod
+    def do(drill):
+        drill.timer = (drill.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % drill.frameMax
+
+    @staticmethod
+    def draw():
+        pass
+class Drill(TileMap):
+    ore = None
+    def __init__(self, x=0, y=0, camera_x=0, camera_y=0, layer = Layer(1), blocks = Blocks(2)
+                 , flip='', degree=0):
+        super().__init__(x,y,camera_x,camera_y,layer,blocks,flip,degree)
+        self.image = load_image("Resource/blast-drill-Sheet.png") # 드릴 이미지
         self.layer = Layer.building
         self.timer = 0
         self.discharge_dir_x = 0
         self.discharge_dir_y = 0
-        self.state_machine = StateMachine
+        self.state_machine = StateMachine(self)
         self.state_machine.start(Idle)
         self.state_machine.set_transitions(
             {
-                Idle: {on_conveyor: Move, leave_conveyor: Idle},
-                Move: {leave_conveyor: Idle, on_conveyor: Move},
+                Idle : {Mine : Idle},
             }
         )
 
     def update(self):
-        pass
+        super().update()
+        self.state_machine.update()
     def draw(self):
-        pass
+        super().draw()
+        self.state_machine.draw()

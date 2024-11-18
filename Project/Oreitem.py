@@ -1,11 +1,11 @@
-import game_framework
+
 
 from pico2d import load_image, get_time, draw_rectangle
 
 from Project.enum_define import Layer, Items, Blocks
 from Project.state_machine import StateMachine, on_conveyor, leave_conveyor
-import game_world
-
+from Project import game_world
+from Project import game_framework
 class Move:
     @staticmethod
     def enter(ore, e):
@@ -46,7 +46,7 @@ class Oreitem:
     pixel_size = 32
     dir_x,dir_y = 0,0
     size = 16
-    def __init__(self, name, x, y, oretype = Items(1)):
+    def __init__(self, name, x, y, oretype = Items.beryllium):
         #필요한거: 위치, 이미지, state(레이어 나누기 위한 블럭state), 이름, state머신
         self.colliding = False
         self.oretype = oretype
@@ -55,7 +55,7 @@ class Oreitem:
         self.state_machine = StateMachine(self)
         self.name = name
         self.speed = 10
-        self.layer = Layer(2)
+        self.layer = Layer.ore
         self.state_machine.start(Idle)
         self.state_machine.set_transitions(
             {
@@ -63,17 +63,17 @@ class Oreitem:
                 Move: { leave_conveyor : Idle, on_conveyor : Move},
             }
         )
-        if self.oretype == Items(1):
+        if self.oretype == Items.beryllium:
             self.image = load_image("Resource/item-beryllium.png")
-        elif self.oretype == Items(2):
+        elif self.oretype == Items.coal:
             self.image = load_image("Resource/item-coal.png")
-        elif self.oretype == Items(3):
+        elif self.oretype == Items.copper:
             self.image = load_image("Resource/item-copper.png")
-        elif self.oretype == Items(4):
+        elif self.oretype == Items.pyratite:
             self.image = load_image("Resource/item-pyratite.png")
-        elif self.oretype == Items(5):
+        elif self.oretype == Items.titanium:
             self.image = load_image("Resource/item-titanium.png")
-        elif self.oretype == Items(6):
+        elif self.oretype == Items.tungsten:
             self.image = load_image("Resource/item-tungsten.png")
 
     def update(self):

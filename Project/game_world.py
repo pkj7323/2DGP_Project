@@ -1,5 +1,5 @@
 import enum_define
-from Project.enum_define import Layer
+
 
 world = [[] for i in range(enum_define.Layer.end.value)]
 collision_pairs = {}

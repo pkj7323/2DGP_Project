@@ -3,8 +3,8 @@ from sdl2 import SDL_KEYDOWN, SDLK_i, SDLK_ESCAPE
 
 from Project.enum_define import Layer
 from Project.pannel import Pannel
-import game_world
-import game_framework
+from Project import game_world
+from Project import game_framework
 
 def init():
     global pannel

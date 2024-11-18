@@ -2,7 +2,7 @@ from pico2d import *
 
 from Project import game_framework
 from Project.enum_define import Layer
-import game_world
+from Project import game_world
 
 class Camera:
     def __init__(self):

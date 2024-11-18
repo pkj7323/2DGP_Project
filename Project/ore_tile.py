@@ -7,7 +7,7 @@ import random
 class OreTile(TileMap):
     tile_pixel_size = 32
     item = None
-    def __init__(self,x=0, y=0, camera_x=0, camera_y=0, layer = Layer(1), blocks = Blocks(3)
+    def __init__(self,x=0, y=0, camera_x=0, camera_y=0, layer = Layer.tile, blocks = Blocks.beryllium_ore
                  , flip='', degree=0):
         super().__init__(x, y, camera_x, camera_y, layer, blocks, flip, degree)
 

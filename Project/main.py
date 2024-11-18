@@ -1,6 +1,6 @@
 from pico2d import open_canvas, close_canvas, hide_cursor
 import play_mode as start_mode
-import game_framework
+from Project import game_framework
 
 open_canvas()
 hide_cursor()

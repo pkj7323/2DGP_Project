@@ -34,7 +34,7 @@ def handle_events():
         elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
             ore = Oreitem('beryllium_ore',event.x, (get_canvas_height() - event.y),Items(1))
             game_world.add_object(ore,Layer.ore)
-            game_world.add_collision_pair("ore:CONVEYOR1",ore,None)
+
         else:
             Camera_Instance.handle_event(event)
             tile_map_instance.handle_event(event, Camera_Instance)

@@ -75,7 +75,7 @@ class Oreitem:
             self.image = load_image("Resource/item-titanium.png")
         elif self.oretype == Items.tungsten:
             self.image = load_image("Resource/item-tungsten.png")
-
+        game_world.add_collision_pair("ore:CONVEYOR1", self, None)
     def update(self):
         self.state_machine.update()
         self.check_collision_end()

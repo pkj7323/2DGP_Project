@@ -1,3 +1,4 @@
+from Project.drill import Drill
 from Project.enum_define import Layer, Blocks
 from Project.conveyor_tile import ConveyorTile
 from ore_tile import OreTile
@@ -50,6 +51,9 @@ class TileMapManager:
                 game_world.add_collision_pair("ore:CONVEYOR1", None, new_tile)
             elif self.nowBlocks.value == Blocks.beryllium_ore.value:
                 new_tile = OreTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
+            elif self.nowBlocks.value == Blocks.drill.value:
+                new_tile = Drill(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
+                game_world.add_collision_pair('Drill:Ore', new_tile, None)
             return new_tile
         else:
             return None
@@ -95,6 +99,8 @@ class TileMapManager:
                 self.nowBlocks = Blocks.conveyor
             elif event.key == SDLK_2:
                 self.nowBlocks = Blocks.beryllium_ore
+            elif event.key == SDLK_3:
+                self.nowBlocks = Blocks.drill
 
             # 타일맵 추가저장
 

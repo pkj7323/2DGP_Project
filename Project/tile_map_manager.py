@@ -53,7 +53,7 @@ class TileMapManager:
                 new_tile = OreTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             elif self.nowBlocks.value == Blocks.drill.value:
                 new_tile = Drill(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-                game_world.add_collision_pair('Drill:Ore', new_tile, None)
+
             return new_tile
         else:
             return None
@@ -126,6 +126,10 @@ class TileMapManager:
                 game_world.add_collision_pair("ore:CONVEYOR1",None,tile_map)
             elif image.value == Blocks.beryllium_ore.value:
                 tile_map = OreTile(x,y,0,0,layer, image, flip, degree)
+
+            elif image.value == Blocks.drill.value:
+                tile_map = Drill(x, y, 0, 0, layer, image, flip, degree)
+
             self.grid.mark_center_used((x, y, image.value, flip, degree), layer) # 파일에서 타일 불러올때 그리드에도 업데이트를 함
             game_world.add_object(tile_map, layer)
 

@@ -1,4 +1,4 @@
-
+from enum import nonmember
 
 from pico2d import load_image, get_time, draw_rectangle
 
@@ -76,6 +76,7 @@ class Oreitem:
         elif self.oretype == Items.tungsten:
             self.image = load_image("Resource/item-tungsten.png")
         game_world.add_collision_pair("ore:CONVEYOR1", self, None)
+        game_world.add_collision_pair("Base:Ore", None, self)
     def update(self):
         self.state_machine.update()
         self.check_collision_end()

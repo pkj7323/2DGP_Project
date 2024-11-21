@@ -13,6 +13,12 @@ class Blocks(enum.Enum):
     conveyor = 2
     drill = 3
     beryllium_ore = 4
+    coal_ore = 5
+    copper_ore = 6
+    pyratite_ore = 7
+    titanium_ore = 8
+    tungsten_ore = 9
+    base_tile = 10
 
 class Items(enum.Enum):
     beryllium = 1

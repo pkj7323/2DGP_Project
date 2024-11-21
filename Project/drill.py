@@ -58,6 +58,7 @@ class Drill(TileMap):
     timer = 0
     tile_pixel_size = 128
     frameMax = 2
+    blocks = Blocks.drill
     def __init__(self, x=0, y=0, camera_x=0, camera_y=0, layer = Layer(1), blocks = Blocks(2)
                  , flip='', degree=0, drilling_speed = 3):
         super().__init__(x,y,camera_x,camera_y,layer,blocks,flip,degree)
@@ -66,7 +67,7 @@ class Drill(TileMap):
         self.drilling_speed = drilling_speed
         self.discharge_dir_x = 1
         self.discharge_dir_y = 0
-
+        game_world.add_collision_pair("Drill:Ore", self, None)
         if degree == 0 or degree == 360:
             self.discharge_dir_x, self.discharge_dir_y = 1, 0
         elif degree == -90 or degree == 270:

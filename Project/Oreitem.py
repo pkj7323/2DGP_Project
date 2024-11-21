@@ -49,7 +49,7 @@ class Oreitem:
     def __init__(self, name, x, y, oretype = Items.beryllium):
         #필요한거: 위치, 이미지, state(레이어 나누기 위한 블럭state), 이름, state머신
         self.colliding = False
-        self.oretype = oretype
+        self.ore_type = oretype
         self.x = x
         self.y = y
         self.state_machine = StateMachine(self)
@@ -63,17 +63,17 @@ class Oreitem:
                 Move: { leave_conveyor : Idle, on_conveyor : Move},
             }
         )
-        if self.oretype == Items.beryllium:
+        if self.ore_type == Items.beryllium:
             self.image = load_image("Resource/item-beryllium.png")
-        elif self.oretype == Items.coal:
+        elif self.ore_type == Items.coal:
             self.image = load_image("Resource/item-coal.png")
-        elif self.oretype == Items.copper:
+        elif self.ore_type == Items.copper:
             self.image = load_image("Resource/item-copper.png")
-        elif self.oretype == Items.pyratite:
+        elif self.ore_type == Items.pyratite:
             self.image = load_image("Resource/item-pyratite.png")
-        elif self.oretype == Items.titanium:
+        elif self.ore_type == Items.titanium:
             self.image = load_image("Resource/item-titanium.png")
-        elif self.oretype == Items.tungsten:
+        elif self.ore_type == Items.tungsten:
             self.image = load_image("Resource/item-tungsten.png")
         game_world.add_collision_pair("ore:CONVEYOR1", self, None)
         game_world.add_collision_pair("Base:Ore", None, self)
@@ -114,6 +114,8 @@ class Oreitem:
             self.state_machine.add_event(('ON_CONVEYOR', 0))
             self.dir_x, self.dir_y = other.dir_x, other.dir_y
             self.speed = other.transfer_speed
+        if group == 'Base:Ore':
+            game_world.remove_object(self)
         self.colliding = True
 
 

@@ -18,7 +18,6 @@ cursor = MouseIcon()
 
 
 
-
 def handle_events():
 
     global Camera_Instance
@@ -69,9 +68,7 @@ def draw():
     clear_canvas()
     game_world.draw()
     cursor.draw()
-    # font = Font('Resource/KCC_dodaumdodaum.ttf', 20)
-    # font.draw(0,get_canvas_height() - 10,"자원 현황",(255,255,255))
-    # font.draw(0,get_canvas_height() - 30,"자원",(255,255,255))
+
 
     update_canvas()
 

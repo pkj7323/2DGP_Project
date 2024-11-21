@@ -1,9 +1,30 @@
-import enum_define
+from pico2d import load_font, get_canvas_height
 
+from Project.enum_define import Layer, Items
 
-world = [[] for i in range(enum_define.Layer.end.value)]
+world = [[] for i in range(Layer.end.value)]
 collision_pairs = {}
 #{key:[[][]]}
+items={}
+#{ Items.key : int}
+
+
+
+def draw_item_counts():
+    x = 0
+    y = get_canvas_height() - 40  # Top-down 위치 설정
+    _font = load_font('Resource/KCC_dodaumdodaum.ttf', 16)
+    for item, count in items.items():
+        text = f"{item}: {count}"
+        _font.draw(x, y, text, (255, 255, 255))
+        y -= 20  # 다음 줄로 내려가기 위한 y 좌표 조정
+
+        # 화면 아래로 넘어가지 않도록 체크
+        if y < 0:
+            y = get_canvas_height() - 40
+            x += 100  # 새로운 열로 이동
+
+
 def add_collision_pair(key,obj1,obj2):
     if key not in collision_pairs:
         collision_pairs[key] =[[],[]]
@@ -11,6 +32,14 @@ def add_collision_pair(key,obj1,obj2):
         collision_pairs[key][0].append(obj1)
     if obj2:
         collision_pairs[key][1].append(obj2)
+
+def add_item_once(key):
+    if key not in items:
+        items[key] = 1
+    else:
+        items[key] += 1
+    #item_num = items[key]
+
 
 def handle_collision():
     collision_occurred = {}
@@ -34,10 +63,10 @@ def handle_collision():
 
 def remove_collision_object(obj):
     for pair in collision_pairs.items():
-        if obj in pair[0]:
-            pair[0].remove(obj)
-        if obj in pair[1]:
-            pair[1].remove(obj)
+        if obj in pair[1][0]:
+            pair[1][0].remove(obj)
+        if obj in pair[1][1]:
+            pair[1][1].remove(obj)
 def collision_check(a,b):
     left_a, top_a, right_a, bottom_a = a.get_bb()
     left_b, top_b, right_b, bottom_b = b.get_bb()
@@ -56,17 +85,19 @@ def add_object(obj,layer):
     world[layer.value].append(obj)
 
 def update():
-    for layer in range(enum_define.Layer.end.value):
+    for layer in range(Layer.end.value):
         for obj in world[layer]:
             obj.update()
 
 def draw():
-    for layer in range(enum_define.Layer.end.value):
+    for layer in range(Layer.end.value):
         for obj in world[layer]:
             obj.draw()
+    draw_item_counts()
+
 
 def remove_object(obj):
-    for layer in range(enum_define.Layer.end.value):
+    for layer in range(Layer.end.value):
         if obj in world[layer]:
             world[layer].remove(obj)
             remove_collision_object(obj)

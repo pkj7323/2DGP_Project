@@ -14,6 +14,7 @@ FRAMES_PER_ACTION = 2
 
 
 class BaseTile(TileMap):
+    image = None
     def __init__(self, x=0, y=0, camera_x=0, camera_y=0, layer = Layer.building, blocks = Blocks.base_tile
                  , flip='', degree=0):
         super().__init__(x,y, camera_x, camera_y, layer, blocks, flip, degree)

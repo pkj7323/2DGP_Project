@@ -1,6 +1,7 @@
 from Project.drill import Drill
 from Project.enum_define import Layer, Blocks
 from Project.conveyor_tile import ConveyorTile
+from Project.tiles.base_tile import BaseTile
 from ore_tile import OreTile
 from Project.tile_map import TileMap
 from pico2d import *
@@ -53,6 +54,8 @@ class TileMapManager:
                 new_tile = OreTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             elif self.nowBlocks.value == Blocks.drill.value:
                 new_tile = Drill(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
+            elif self.nowBlocks.value == Blocks.base_tile.value:
+                new_tile = BaseTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
 
             return new_tile
         else:
@@ -101,6 +104,8 @@ class TileMapManager:
                 self.nowBlocks = Blocks.beryllium_ore
             elif event.key == SDLK_3:
                 self.nowBlocks = Blocks.drill
+            elif event.key == SDLK_4:
+                self.nowBlocks = Blocks.base_tile
 
             # 타일맵 추가저장
 
@@ -126,9 +131,10 @@ class TileMapManager:
                 game_world.add_collision_pair("ore:CONVEYOR1",None,tile_map)
             elif image.value == Blocks.beryllium_ore.value:
                 tile_map = OreTile(x,y,0,0,layer, image, flip, degree)
-
             elif image.value == Blocks.drill.value:
                 tile_map = Drill(x, y, 0, 0, layer, image, flip, degree)
+            elif image.value == Blocks.base_tile.value:
+                tile_map = BaseTile(x, y, 0, 0, layer, image, flip, degree)
 
             self.grid.mark_center_used((x, y, image.value, flip, degree), layer) # 파일에서 타일 불러올때 그리드에도 업데이트를 함
             game_world.add_object(tile_map, layer)

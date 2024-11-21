@@ -1,4 +1,5 @@
 from pico2d import load_image, draw_rectangle
+from pygame.examples.cursors import image
 
 from Project import game_framework, game_world
 from Project.enum_define import Layer, Blocks
@@ -14,13 +15,13 @@ FRAMES_PER_ACTION = 2
 
 
 class BaseTile(TileMap):
-    image = None
+    image = load_image("Resource/container-Sheet.png")  # 드릴 이미지
     def __init__(self, x=0, y=0, camera_x=0, camera_y=0, layer = Layer.building, blocks = Blocks.base_tile
                  , flip='', degree=0):
         super().__init__(x,y, camera_x, camera_y, layer, blocks, flip, degree)
         self.bb_size_x = 40
         self.bb_size_y = 40
-        self.image = load_image("Resource/blast-drill-Sheet.png")  # 드릴 이미지
+
 
         game_world.add_collision_pair("Base:Ore", self, None)
         if degree == 0 or degree == 360:

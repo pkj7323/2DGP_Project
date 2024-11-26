@@ -79,6 +79,7 @@ class Oreitem:
             self.image = load_image("Resource/item-diamond.png")
         game_world.add_collision_pair("ore:CONVEYOR1", self, None)
         game_world.add_collision_pair("Base:Ore", None, self)
+        game_world.add_collision_pair("Crafter:Ore", None, self)
     def update(self):
         self.state_machine.update()
         self.check_collision_end()
@@ -119,7 +120,13 @@ class Oreitem:
         if group == 'Base:Ore':
             game_world.remove_object(self)
         if group == 'Crafter:Ore':
-            game_world.remove_object(self)
+            if self.ore_type == Items.diamond:
+                pass
+            elif self.ore_type == Items.beryllium:
+                game_world.remove_object(self)
+            elif self.ore_type == Items.coal:
+                game_world.remove_object(self)
+
         self.colliding = True
 
 

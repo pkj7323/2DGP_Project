@@ -28,8 +28,13 @@ class Mine:
         drill.timer += game_framework.frame_time
         if drill.timer >= drill.drilling_speed:
             drill.timer = 0
-            ore_item = Oreitem('beryllium_ore_item', drill.x + drill.discharge_dir_x * drill.bb_size_x / 2,
+            ore_item = None
+            if drill.ore_type == Items.beryllium:
+                ore_item = Oreitem('beryllium_ore_item', drill.x + drill.discharge_dir_x * drill.bb_size_x / 2,
                                drill.y + drill.discharge_dir_y * drill.bb_size_y / 2, Items.beryllium)
+            elif drill.ore_type == Items.coal:
+                ore_item = Oreitem('coal_ore_item', drill.x + drill.discharge_dir_x * drill.bb_size_x / 2,
+                               drill.y + drill.discharge_dir_y * drill.bb_size_y / 2, Items.coal)
             game_world.add_object(ore_item, Layer.ore)
     @staticmethod
     def draw(drill):
@@ -103,6 +108,9 @@ class Drill(TileMap):
         if group == 'Drill:Ore':
             if other.blocks == Blocks.beryllium_ore:
                 self.ore_type = Items.beryllium
+                self.state_machine.add_event(('ON_ORE',0))
+            elif other.blocks == Blocks.coal_ore:
+                self.ore_type = Items.coal
                 self.state_machine.add_event(('ON_ORE',0))
 
 

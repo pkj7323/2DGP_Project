@@ -1,9 +1,9 @@
-from pico2d import load_image, draw_rectangle
+from pico2d import load_image, draw_rectangle, load_font
 
-from Project import game_framework, game_world
+from Project import game_framework
+from Project import game_world
 from Project.Oreitem import Oreitem
 from Project.enum_define import Layer, Blocks, Items
-from Project.game_world import items
 from Project.tile_map import TileMap
 import math
 
@@ -43,13 +43,12 @@ class CrafterTile(TileMap):
 
     def update(self):
         super().update()
-        if self.coal_ore == 5 and self.beryllium_ore == 5:
-            result = Oreitem(
-                'diamond_ore_item',
-                self.dir_x * 20,
-                self.dir_y * 20,
-                Items.diamond)
+        if self.coal_ore >= 5 and self.beryllium_ore >= 5:
+            result = Oreitem('coal_ore_item', self.x + self.dir_x * self.bb_size_x / 2,
+                               self.y + self.dir_y * self.bb_size_y / 2, Items.diamond)
             game_world.add_object(result, Layer.ore)
+            self.coal_ore = 0
+            self.beryllium_ore = 0
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % self.frameMax
 
 
@@ -58,15 +57,17 @@ class CrafterTile(TileMap):
         self.image.clip_composite_draw(int(self.frame) * self.offset, 0, self.tile_pixel_size, self.tile_pixel_size,
                                        math.radians(self.degree), self.flip, self.x, self.y, self.size, self.size)
         draw_rectangle(*self.get_bb())
+        font=load_font('Resource/KCC_dodaumdodaum.ttf')
+        font.draw(self.x,self.y,f'베릴륨:{self.beryllium_ore} / 석탄:{self.coal_ore}')
 
     def get_bb(self):
         return self.x - self.bb_size_x / 2, self.y + self.bb_size_y / 2, self.x + self.bb_size_x / 2, self.y - self.bb_size_y / 2
 
     def handle_collision(self, group, other):
         if group == 'Crafter:Ore':
-            if other.oretype == items.beryllium:
+            if other.ore_type == Items.beryllium:
                 self.beryllium_ore += 1
-            if other.oretype == items.coal:
+            if other.ore_type == Items.coal:
                 self.coal_ore += 1
 
     def handle_collision_end(self):

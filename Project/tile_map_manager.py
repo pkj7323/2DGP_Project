@@ -50,7 +50,6 @@ class TileMapManager:
                 new_tile = TileMap(tile_x, tile_y,camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             elif self.nowBlocks.value == Blocks.conveyor.value:
                 new_tile = ConveyorTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-                game_world.add_collision_pair("ore:CONVEYOR1", None, new_tile)
             elif self.nowBlocks.value == Blocks.beryllium_ore.value:
                 new_tile = OreTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             elif self.nowBlocks.value == Blocks.drill.value:
@@ -59,6 +58,8 @@ class TileMapManager:
                 new_tile = BaseTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             elif self.nowBlocks.value == Blocks.crafter.value:
                 new_tile = CrafterTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
+            elif self.nowBlocks.value == Blocks.coal_ore.value:
+                new_tile = OreTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             return new_tile
         else:
             return None
@@ -112,6 +113,8 @@ class TileMapManager:
                 self.nowBlocks = Blocks.base_tile
             elif event.key == SDLK_5:
                 self.nowBlocks = Blocks.crafter
+            elif event.key == SDLK_6:
+                self.nowBlocks = Blocks.coal_ore
 
             # 타일맵 추가저장
 
@@ -134,7 +137,7 @@ class TileMapManager:
                 tile_map = TileMap(x, y, 0, 0, layer, image, flip, degree)
             elif image.value == Blocks.conveyor.value:
                 tile_map = ConveyorTile(x, y, 0, 0, layer, image, flip, degree)
-                game_world.add_collision_pair("ore:CONVEYOR1",None,tile_map)
+
             elif image.value == Blocks.beryllium_ore.value:
                 tile_map = OreTile(x,y,0,0,layer, image, flip, degree)
             elif image.value == Blocks.drill.value:

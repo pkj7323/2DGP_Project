@@ -25,6 +25,8 @@ class OreTile(TileMap):
                 self.image = load_image('Resource/ore-beryllium3-tile.png')
             else:
                 self.image = load_image('Resource/error.png')
+        elif blocks == Blocks.coal_ore:
+            self.image = load_image('Resource/ore-coal-tile.png')
         game_world.add_collision_pair("Drill:Ore", None, self)
 
     def draw(self):

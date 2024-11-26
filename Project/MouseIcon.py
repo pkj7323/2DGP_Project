@@ -38,3 +38,5 @@ class MouseIcon:
                 self.image = load_image('Resource/cursor-container.png')
             elif event.key == SDLK_5:
                 self.image = load_image('Resource/cursor-crafter.png')
+            elif event.key == SDLK_6:
+                self.image = load_image('Resource/cursor-ore-coal-tile.png')

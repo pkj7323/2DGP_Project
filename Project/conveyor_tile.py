@@ -1,5 +1,5 @@
 import math
-
+from Project import game_world
 from Project.tile_map import TileMap
 from pico2d import *
 from enum_define import Layer
@@ -38,6 +38,7 @@ class ConveyorTile(TileMap):
             self.dir_x, self.dir_y = -1, 0
             self.bb_size_x = self.size
             self.bb_size_y = 0
+        game_world.add_collision_pair("ore:CONVEYOR1", None, self)
 
         self.transfer_speed = 20.0
         self.colliding = False

@@ -75,6 +75,8 @@ class Oreitem:
             self.image = load_image("Resource/item-titanium.png")
         elif self.ore_type == Items.tungsten:
             self.image = load_image("Resource/item-tungsten.png")
+        elif self.ore_type == Items.diamond:
+            self.image = load_image("Resource/item-diamond.png")
         game_world.add_collision_pair("ore:CONVEYOR1", self, None)
         game_world.add_collision_pair("Base:Ore", None, self)
     def update(self):
@@ -115,6 +117,8 @@ class Oreitem:
             self.dir_x, self.dir_y = other.dir_x, other.dir_y
             self.speed = other.transfer_speed
         if group == 'Base:Ore':
+            game_world.remove_object(self)
+        if group == 'Crafter:Ore':
             game_world.remove_object(self)
         self.colliding = True
 

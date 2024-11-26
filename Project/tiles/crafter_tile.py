@@ -1,7 +1,9 @@
 from pico2d import load_image, draw_rectangle
 
 from Project import game_framework, game_world
+from Project.Oreitem import Oreitem
 from Project.enum_define import Layer, Blocks, Items
+from Project.game_world import items
 from Project.tile_map import TileMap
 import math
 
@@ -26,11 +28,28 @@ class CrafterTile(TileMap):
         super().__init__(x,y, camera_x, camera_y, layer, blocks, flip, degree)
         self.image = load_image("Resource/crafting_table_sheet.png")
         game_world.add_collision_pair("Crafter:Ore", self, None)
-
+        self.beryllium_ore = 0
+        self.coal_ore = 0
+        self.dir_x, self.dir_y = 1, 0
+        if degree == 0 or degree == 360:
+            self.dir_x, self.dir_y = 1, 0
+        elif degree == -90 or degree == 270:
+            self.dir_x, self.dir_y = 0, -1
+        elif degree == 90 or degree == -270:
+            self.dir_x, self.dir_y = 0, 1
+        elif degree == 180 or degree == -180:
+            self.dir_x, self.dir_y = -1, 0
 
 
     def update(self):
         super().update()
+        if self.coal_ore == 5 and self.beryllium_ore == 5:
+            result = Oreitem(
+                'diamond_ore_item',
+                self.dir_x * 20,
+                self.dir_y * 20,
+                Items.diamond)
+            game_world.add_object(result, Layer.ore)
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % self.frameMax
 
 
@@ -45,7 +64,10 @@ class CrafterTile(TileMap):
 
     def handle_collision(self, group, other):
         if group == 'Crafter:Ore':
-            game_world.add_item_once(other.ore_type)
+            if other.oretype == items.beryllium:
+                self.beryllium_ore += 1
+            if other.oretype == items.coal:
+                self.coal_ore += 1
 
     def handle_collision_end(self):
         pass

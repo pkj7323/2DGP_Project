@@ -28,4 +28,5 @@ class Items(enum.Enum):
     pyratite = 4
     titanium = 5
     tungsten = 6
+    diamond = 7
     end = 10

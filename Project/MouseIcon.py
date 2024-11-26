@@ -9,7 +9,7 @@ class MouseIcon:
         self.x = 0
         self.y = 0
         self.state = Layer.mouse
-        self.image = load_image('Resource/cursor.png')
+        self.image = None
     def draw(self):
         self.image.draw(self.x,self.y,64,64)
     def update(self):
@@ -27,4 +27,14 @@ class MouseIcon:
             elif event.key == SDLK_F4:
                 self.image = load_image('Resource/drill.png')
             elif event.key == SDLK_0:
-                self.image = load_image('Resource/tile1.png')
+                self.image = load_image('Resource/cursor-tile.png')
+            elif event.key == SDLK_1:
+                self.image = load_image('Resource/cursor-conveyor.png')
+            elif event.key == SDLK_2:
+                self.image = load_image('Resource/cursor-beryllium-ore.png')
+            elif event.key == SDLK_3:
+                self.image = load_image('Resource/cursor-blast-drill.png')
+            elif event.key == SDLK_4:
+                self.image = load_image('Resource/cursor-container.png')
+            elif event.key == SDLK_5:
+                self.image = load_image('Resource/cursor-crafter.png')

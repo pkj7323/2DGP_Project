@@ -1,5 +1,6 @@
 from pico2d import *
 
+
 from Project.enum_define import Layer
 
 
@@ -8,15 +9,14 @@ class MouseIcon:
         self.x = 0
         self.y = 0
         self.state = Layer.mouse
-        self.image = None
+        self.image = load_image('Resource/cursor.png')
     def draw(self):
-        self.image.draw(self.x,self.y)
+        self.image.draw(self.x,self.y,64,64)
     def update(self):
         pass
     def handle_event(self, event):
         if event.type == SDL_MOUSEMOTION:
             self.x, self.y = event.x, (get_canvas_height() - event.y)
-            self.draw()
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_F1:
                 self.image = load_image('Resource/cursor.png')
@@ -26,3 +26,5 @@ class MouseIcon:
                 self.image = load_image('Resource/target.png')
             elif event.key == SDLK_F4:
                 self.image = load_image('Resource/drill.png')
+            elif event.key == SDLK_0:
+                self.image = load_image('Resource/tile1.png')

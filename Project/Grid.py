@@ -10,14 +10,16 @@ class Grid:
 
     def is_center_available(self, center, block_state):#block_state == type(layer)
         is_available = True
-        for s in self.used_centers[block_state.value]:
-            if center[0]==s[0] and center[1]==s[1]:
-                is_available = False
-                break
+        for value in range(enum_define.Layer.end.value):
+            for s in self.used_centers[value]:
+                if center[0]==s[0] and center[1]==s[1]:
+                    is_available = False
+                    break
         return is_available
 
     def mark_center_used(self, center, block_state):#block_state == type(layer)
         self.used_centers[block_state.value].add(center)
-    def remove_center_used(self, center, block_state):
-        if center in self.used_centers[block_state.value]:
-            self.used_centers[block_state.value].remove(center)
+    def remove_center_used(self, center):
+        for block_state in range(enum_define.Layer.end.value):
+            if center in self.used_centers[block_state]:
+                self.used_centers[block_state].remove(center)

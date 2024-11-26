@@ -2,6 +2,7 @@ from Project.drill import Drill
 from Project.enum_define import Layer, Blocks
 from Project.conveyor_tile import ConveyorTile
 from Project.tiles.base_tile import BaseTile
+from Project.tiles.crafter_tile import CrafterTile
 from ore_tile import OreTile
 from Project.tile_map import TileMap
 from pico2d import *
@@ -56,7 +57,8 @@ class TileMapManager:
                 new_tile = Drill(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             elif self.nowBlocks.value == Blocks.base_tile.value:
                 new_tile = BaseTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-
+            elif self.nowBlocks.value == Blocks.crafter.value:
+                new_tile = CrafterTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             return new_tile
         else:
             return None
@@ -72,7 +74,7 @@ class TileMapManager:
         if not self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip
                                               , self.degree), self.layer):
             self.grid.remove_center_used((center_x, center_y, self.nowBlocks.value, self.flip
-                                          , self.degree), self.layer)
+                                          , self.degree))
 
     def handle_event(self, event, camera_instance):
         if event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_LEFT:
@@ -108,6 +110,8 @@ class TileMapManager:
                 self.nowBlocks = Blocks.drill
             elif event.key == SDLK_4:
                 self.nowBlocks = Blocks.base_tile
+            elif event.key == SDLK_5:
+                self.nowBlocks = Blocks.crafter
 
             # 타일맵 추가저장
 
@@ -137,6 +141,8 @@ class TileMapManager:
                 tile_map = Drill(x, y, 0, 0, layer, image, flip, degree)
             elif image.value == Blocks.base_tile.value:
                 tile_map = BaseTile(x, y, 0, 0, layer, image, flip, degree)
+            elif image.value == Blocks.crafter.value:
+                tile_map = CrafterTile(x, y, 0, 0, layer, image, flip, degree)
 
             self.grid.mark_center_used((x, y, image.value, flip, degree), layer) # 파일에서 타일 불러올때 그리드에도 업데이트를 함
             game_world.add_object(tile_map, layer)

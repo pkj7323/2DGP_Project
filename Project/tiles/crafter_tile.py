@@ -9,22 +9,22 @@ import math
 
 TIME_PER_ACTION = 2
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION
-FRAMES_PER_ACTION = 5
+FRAMES_PER_ACTION = 2
 
 
 
 class CrafterTile(TileMap):
     image = None  # 드릴 이미지
-    bb_size_x = 40
-    bb_size_y = 40
+    bb_size_x = 30
+    bb_size_y = 30
     offset = 64
     tile_pixel_size = 64
-    frameMax = 5
-    blocks = Blocks.drill
+    frameMax = 2
+    blocks = Blocks.crafter
     def __init__(self, x=0, y=0, camera_x=0, camera_y=0, layer = Layer.building, blocks = Blocks.base_tile
                  , flip='', degree=0):
         super().__init__(x,y, camera_x, camera_y, layer, blocks, flip, degree)
-        self.image = load_image("Resource/crafting_table.png")
+        self.image = load_image("Resource/crafting_table_sheet.png")
         game_world.add_collision_pair("Crafter:Ore", self, None)
 
 

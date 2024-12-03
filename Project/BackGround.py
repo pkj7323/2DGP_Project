@@ -1,4 +1,4 @@
-from pico2d import load_image
+from pico2d import load_image, load_music
 
 from Project.enum_define import Layer
 
@@ -11,6 +11,9 @@ class BackGround:
         self.height = 2400
         self.image = load_image("Resource\\Red_Sandstone.png")
         self.layer = Layer.backGround
+        self.music = load_music('Resource/Sounds/fine.ogg')
+        self.music.set_volume(30)
+        self.music.play()
     def update(self):
         pass
     def draw(self):

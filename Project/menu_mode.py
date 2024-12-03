@@ -30,6 +30,7 @@ def init():
     background = BackGround()
     background.image=load_image('Resource/logo.png')
     background.music=load_music('Resource/Sounds/menu.ogg')
+    background.music.set_volume(50)
     background.music.play()
     background.width=get_canvas_width()
     background.height=get_canvas_height()

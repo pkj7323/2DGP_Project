@@ -30,9 +30,9 @@ def handle_events():
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_i:
             game_framework.push_mode(milestone_mode)
-        elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
-            ore = Oreitem('diamond-ore-item',event.x, (get_canvas_height() - event.y),Items.diamond)
-            game_world.add_object(ore,Layer.ore)
+        # elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
+        #     ore = Oreitem('diamond-ore-item',event.x, (get_canvas_height() - event.y),Items.diamond)
+        #     game_world.add_object(ore,Layer.ore)
 
         else:
             Camera_Instance.handle_event(event)

@@ -1,8 +1,8 @@
 from pico2d import *
 
 import milestone_mode
-from BackGround import *
-from Camera import Camera
+from Project.BackGround import *
+from Project.Camera import Camera
 from Project.Oreitem import Oreitem
 from Project.enum_define import Layer, Items
 from Project.MouseIcon import MouseIcon

@@ -9,6 +9,13 @@ items={}
 #{ Items.key : int}
 degree = 0
 
+def reset_world():
+    global world
+    global collision_pairs
+    global items
+    global degree
+    world = [[] for i in range(Layer.end.value)]
+    collision_pairs = {}
 
 def draw_item_counts():
     x = 0

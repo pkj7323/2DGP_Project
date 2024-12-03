@@ -97,10 +97,12 @@ class TileMapManager:
                 self.degree += 90
                 if self.degree >= 360:
                     self.degree = 0
+                game_world.degree = self.degree
             elif event.key == SDLK_q:
                 self.degree -= 90
                 if self.degree <= -360:
                     self.degree = 0
+                game_world.degree = self.degree
             elif event.key == SDLK_0:
                 self.nowBlocks = Blocks.wall
             elif event.key == SDLK_1:

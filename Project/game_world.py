@@ -7,7 +7,7 @@ collision_pairs = {}
 #{key:[[][]]}
 items={}
 #{ Items.key : int}
-
+degree = 0
 
 
 def draw_item_counts():

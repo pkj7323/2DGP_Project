@@ -63,10 +63,16 @@ class Oreitem:
                 Move: { leave_conveyor : Idle, on_conveyor : Move},
             }
         )
+        game_world.add_collision_pair("ore:CONVEYOR1", self, None)
+        game_world.add_collision_pair("Base:Ore", None, self)
+
         if self.ore_type == Items.beryllium:
             self.image = load_image("Resource/item-beryllium.png")
+            game_world.add_collision_pair("Crafter:Ore", None, self)
         elif self.ore_type == Items.coal:
             self.image = load_image("Resource/item-coal.png")
+            game_world.add_collision_pair("Crafter:Ore", None, self)
+            game_world.add_collision_pair("Furnace:Ore", None, self)
         elif self.ore_type == Items.copper:
             self.image = load_image("Resource/item-copper.png")
         elif self.ore_type == Items.pyratite:
@@ -77,9 +83,12 @@ class Oreitem:
             self.image = load_image("Resource/item-tungsten.png")
         elif self.ore_type == Items.diamond:
             self.image = load_image("Resource/item-diamond.png")
-        game_world.add_collision_pair("ore:CONVEYOR1", self, None)
-        game_world.add_collision_pair("Base:Ore", None, self)
-        game_world.add_collision_pair("Crafter:Ore", None, self)
+        elif self.ore_type == Items.iron_ore:
+            self.image = load_image("Resource/item-raw-iron.png")
+            game_world.add_collision_pair("Furnace:Ore", None, self)
+        elif self.ore_type == Items.iron_ingot:
+            self.image = load_image("Resource/item-iron-ingot.png")
+
     def update(self):
         self.state_machine.update()
         self.check_collision_end()
@@ -125,6 +134,11 @@ class Oreitem:
             elif self.ore_type == Items.beryllium:
                 game_world.remove_object(self)
             elif self.ore_type == Items.coal:
+                game_world.remove_object(self)
+        if group == 'Furnace:Ore':
+            if self.ore_type == Items.iron_ore:
+                game_world.remove_object(self)
+            if self.ore_type == Items.coal:
                 game_world.remove_object(self)
 
         self.colliding = True

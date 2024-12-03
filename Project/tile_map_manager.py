@@ -3,6 +3,7 @@ from Project.enum_define import Layer, Blocks
 from Project.conveyor_tile import ConveyorTile
 from Project.tiles.base_tile import BaseTile
 from Project.tiles.crafter_tile import CrafterTile
+from Project.tiles.furnace_tile import FurnaceTile
 from ore_tile import OreTile
 from Project.tile_map import TileMap
 from pico2d import *
@@ -60,6 +61,10 @@ class TileMapManager:
                 new_tile = CrafterTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             elif self.nowBlocks.value == Blocks.coal_ore.value:
                 new_tile = OreTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
+            elif self.nowBlocks.value == Blocks.furnace.value:
+                new_tile = FurnaceTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
+
+
             return new_tile
         else:
             return None
@@ -116,6 +121,8 @@ class TileMapManager:
             elif event.key == SDLK_5:
                 self.nowBlocks = Blocks.crafter
             elif event.key == SDLK_6:
+                self.nowBlocks = Blocks.furnace
+            elif event.key == SDLK_7:
                 self.nowBlocks = Blocks.coal_ore
 
             # 타일맵 추가저장

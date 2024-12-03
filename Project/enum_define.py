@@ -20,6 +20,7 @@ class Blocks(enum.Enum):
     tungsten_ore = 9
     base_tile = 10
     crafter = 11
+    furnace = 12
 
 class Items(enum.Enum):
     beryllium = 1
@@ -29,4 +30,5 @@ class Items(enum.Enum):
     titanium = 5
     tungsten = 6
     diamond = 7
-    end = 10
+    iron_ore = 8
+    iron_ingot = 9

@@ -4,7 +4,7 @@ from Project import game_framework
 from Project import game_world
 from Project.Oreitem import Oreitem
 from Project.enum_define import Layer, Blocks, Items
-from Project.tile_map import TileMap
+from Project.tiles.tile_map import TileMap
 import math
 
 
@@ -47,8 +47,8 @@ class CrafterTile(TileMap):
             result = Oreitem('coal_ore_item', self.x + self.dir_x * self.bb_size_x / 2,
                                self.y + self.dir_y * self.bb_size_y / 2, Items.diamond)
             game_world.add_object(result, Layer.ore)
-            self.coal_ore = 0
-            self.beryllium_ore = 0
+            self.coal_ore -= 5
+            self.beryllium_ore -= 5
         self.frame = (self.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % self.frameMax
 
 

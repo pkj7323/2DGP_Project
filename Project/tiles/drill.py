@@ -1,12 +1,13 @@
 import math
 
+from fontTools.unicodedata import block
 from pico2d import load_image, draw_rectangle
 
 from Project import game_framework
 from Project.Oreitem import Oreitem
 from Project.enum_define import Layer, Blocks, Items
 from Project.state_machine import StateMachine, on_ore
-from Project.tile_map import TileMap
+from Project.tiles.tile_map import TileMap
 from Project import game_world
 
 # Boy Action Speed
@@ -35,6 +36,9 @@ class Mine:
             elif drill.ore_type == Items.coal:
                 ore_item = Oreitem('coal_ore_item', drill.x + drill.discharge_dir_x * drill.bb_size_x / 2,
                                drill.y + drill.discharge_dir_y * drill.bb_size_y / 2, Items.coal)
+            elif drill.ore_type == Items.iron_ore:
+                ore_item = Oreitem('iron_ore_item', drill.x + drill.discharge_dir_x * drill.bb_size_x / 2,
+                               drill.y + drill.discharge_dir_y * drill.bb_size_y / 2, Items.iron_ore)
             game_world.add_object(ore_item, Layer.ore)
     @staticmethod
     def draw(drill):
@@ -109,9 +113,15 @@ class Drill(TileMap):
             if other.blocks == Blocks.beryllium_ore:
                 self.ore_type = Items.beryllium
                 self.state_machine.add_event(('ON_ORE',0))
+                self.drilling_speed = 1
             elif other.blocks == Blocks.coal_ore:
                 self.ore_type = Items.coal
                 self.state_machine.add_event(('ON_ORE',0))
+                self.drilling_speed = 1
+            elif other.blocks == Blocks.iron_ore:
+                self.ore_type = Items.iron_ore
+                self.state_machine.add_event(('ON_ORE',0))
+                self.drilling_speed = 3
 
 
     def handle_collision_end(self):

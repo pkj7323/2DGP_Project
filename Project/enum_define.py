@@ -21,6 +21,7 @@ class Blocks(enum.Enum):
     base_tile = 10
     crafter = 11
     furnace = 12
+    iron_ore = 13
 
 class Items(enum.Enum):
     beryllium = 1

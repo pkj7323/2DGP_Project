@@ -17,6 +17,8 @@ class MouseIcon:
             return
         elif self.block == Blocks.furnace:
             self.image.draw(self.x+16,self.y-16,32,32)
+        elif self.block == Blocks.iron_ore:
+            self.image.draw(self.x+16,self.y-16,32,32)
         else:
             self.image.draw(self.x,self.y,64,64)
     def update(self):
@@ -61,3 +63,6 @@ class MouseIcon:
             elif event.key == SDLK_7:
                 self.image = load_image('Resource/cursor-ore-coal-tile.png')
                 self.block = Blocks.coal_ore
+            elif event.key == SDLK_8:
+                self.image = load_image('Resource/ore-iron-tile.png')
+                self.block = Blocks.iron_ore

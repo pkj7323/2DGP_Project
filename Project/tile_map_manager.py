@@ -1,11 +1,11 @@
-from Project.drill import Drill
+from Project.tiles.drill import Drill
 from Project.enum_define import Layer, Blocks
-from Project.conveyor_tile import ConveyorTile
+from Project.tiles.conveyor_tile import ConveyorTile
 from Project.tiles.base_tile import BaseTile
 from Project.tiles.crafter_tile import CrafterTile
 from Project.tiles.furnace_tile import FurnaceTile
-from ore_tile import OreTile
-from Project.tile_map import TileMap
+from Project.tiles.ore_tile import OreTile, IronOreTile
+from Project.tiles.tile_map import TileMap
 from pico2d import *
 from Grid import *
 from Project import game_world
@@ -63,7 +63,8 @@ class TileMapManager:
                 new_tile = OreTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
             elif self.nowBlocks.value == Blocks.furnace.value:
                 new_tile = FurnaceTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-
+            elif self.nowBlocks.value == Blocks.iron_ore.value:
+                new_tile = IronOreTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
 
             return new_tile
         else:
@@ -124,6 +125,8 @@ class TileMapManager:
                 self.nowBlocks = Blocks.furnace
             elif event.key == SDLK_7:
                 self.nowBlocks = Blocks.coal_ore
+            elif event.key == SDLK_8:
+                self.nowBlocks = Blocks.iron_ore
 
             # 타일맵 추가저장
 
@@ -146,7 +149,6 @@ class TileMapManager:
                 tile_map = TileMap(x, y, 0, 0, layer, image, flip, degree)
             elif image.value == Blocks.conveyor.value:
                 tile_map = ConveyorTile(x, y, 0, 0, layer, image, flip, degree)
-
             elif image.value == Blocks.beryllium_ore.value:
                 tile_map = OreTile(x,y,0,0,layer, image, flip, degree)
             elif image.value == Blocks.drill.value:
@@ -155,6 +157,12 @@ class TileMapManager:
                 tile_map = BaseTile(x, y, 0, 0, layer, image, flip, degree)
             elif image.value == Blocks.crafter.value:
                 tile_map = CrafterTile(x, y, 0, 0, layer, image, flip, degree)
+            elif image.value == Blocks.coal_ore.value:
+                tile_map = OreTile(x, y, 0, 0, layer, image, flip, degree)
+            elif image.value == Blocks.furnace.value:
+                tile_map = FurnaceTile(x, y, 0, 0, layer, image, flip, degree)
+            elif image.value == Blocks.iron_ore.value:
+                tile_map = IronOreTile(x, y, 0, 0, layer, image, flip, degree)
 
             self.grid.mark_center_used((x, y, image.value, flip, degree), layer) # 파일에서 타일 불러올때 그리드에도 업데이트를 함
             game_world.add_object(tile_map, layer)

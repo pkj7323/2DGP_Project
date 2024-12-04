@@ -44,13 +44,36 @@ class OreTile(TileMap):
         self.colliding = False
 
 class IronOreTile(OreTile):
-    def __init__(self,x=0, y=0, camera_x=0, camera_y=0, layer = Layer.tile, blocks = Blocks.beryllium_ore
+    def __init__(self,x=0, y=0, camera_x=0, camera_y=0, layer = Layer.tile, blocks = Blocks.iron_ore
                  , flip='', degree=0):
         super().__init__(x, y, camera_x, camera_y, layer, blocks, flip, degree)
         self.colliding = False
 
-        if blocks == blocks.iron_ore:
+        if blocks == Blocks.iron_ore:
             self.image = load_image('Resource/ore-iron-tile.png')
+        game_world.add_collision_pair("Drill:Ore", None, self)
+    def draw(self):
+        super().draw()
+        draw_rectangle(*self.get_bb())
+    def get_bb(self):
+        return self.x - self.bb_size_x/2, self.y + self.bb_size_y/2, self.x + self.bb_size_x/2, self.y - self.bb_size_y/2
+
+    def handle_collision(self, group, other):
+        if group == 'Drill:Ore':
+            pass
+        self.colliding = True
+
+    def handle_collision_end(self):
+        self.colliding = False
+
+class CopperOreTile(OreTile):
+    def __init__(self,x=0, y=0, camera_x=0, camera_y=0, layer = Layer.tile, blocks = Blocks.copper_ore
+                 , flip='', degree=0):
+        super().__init__(x, y, camera_x, camera_y, layer, blocks, flip, degree)
+        self.colliding = False
+
+        if blocks == Blocks.copper_ore:
+            self.image = load_image('Resource/tile-copper-ore.png')
         game_world.add_collision_pair("Drill:Ore", None, self)
     def draw(self):
         super().draw()

@@ -15,9 +15,7 @@ class MouseIcon:
     def draw(self):
         if self.image is None:
             return
-        elif self.block == Blocks.furnace:
-            self.image.draw(self.x+16,self.y-16,32,32)
-        elif self.block == Blocks.iron_ore:
+        elif self.block == Blocks.furnace or self.block == Blocks.iron_ore or self.block == Blocks.copper_ore:
             self.image.draw(self.x+16,self.y-16,32,32)
         else:
             self.image.draw(self.x,self.y,64,64)
@@ -66,3 +64,6 @@ class MouseIcon:
             elif event.key == SDLK_8:
                 self.image = load_image('Resource/ore-iron-tile.png')
                 self.block = Blocks.iron_ore
+            elif event.key == SDLK_9:
+                self.image = load_image('Resource/tile-copper-ore.png')
+                self.block = Blocks.copper_ore

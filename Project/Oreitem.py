@@ -25,6 +25,7 @@ class Idle:
     @staticmethod
     def enter(ore, e):
         ore.dir_x , ore.dir_y = 0, 0
+        ore.timer = 0.0
 
     @staticmethod
     def exit(ore, e):
@@ -32,7 +33,9 @@ class Idle:
 
     @staticmethod
     def do(ore):
-        pass
+        ore.timer += game_framework.frame_time
+        if ore.timer >= 5:
+            game_world.remove_object(ore)
 
     @staticmethod
     def draw(ore):

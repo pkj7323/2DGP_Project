@@ -54,7 +54,6 @@ class Idle:
 
     @staticmethod
     def do(drill):
-        # drill.frame = (drill.frame + FRAMES_PER_ACTION * ACTION_PER_TIME * game_framework.frame_time) % drill.frameMax
         pass
     @staticmethod
     def draw(drill):
@@ -122,6 +121,10 @@ class Drill(TileMap):
                 self.ore_type = Items.iron_ore
                 self.state_machine.add_event(('ON_ORE',0))
                 self.drilling_speed = 3
+            elif other.blocks == Blocks.copper_ore:
+                self.ore_type = Items.copper
+                self.state_machine.add_event(('ON_ORE',0))
+                self.drilling_speed = 2
 
 
     def handle_collision_end(self):

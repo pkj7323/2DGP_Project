@@ -4,7 +4,7 @@ from Project.tiles.conveyor_tile import ConveyorTile
 from Project.tiles.base_tile import BaseTile
 from Project.tiles.crafter_tile import CrafterTile
 from Project.tiles.furnace_tile import FurnaceTile
-from Project.tiles.ore_tile import OreTile, IronOreTile
+from Project.tiles.ore_tile import OreTile, IronOreTile, CopperOreTile
 from Project.tiles.tile_map import TileMap
 from pico2d import *
 from Grid import *
@@ -34,8 +34,8 @@ class TileMapManager:
     def __init__(self):
         self.tile_size = 20
         self.grid = Grid(self.tile_size)
-        self.layer = Layer(1)
-        self.nowBlocks = Blocks(1)
+        self.layer = Layer.tile
+        self.nowBlocks = Blocks.wall
         self.flip = ''
         self.degree = 0
     def click(self, x, y, camera):#block_state == type(BlockState)
@@ -46,25 +46,7 @@ class TileMapManager:
 
         if self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip, self.degree), self.layer):
             self.grid.mark_center_used((center_x, center_y, self.nowBlocks.value, self.flip, self.degree), self.layer)
-            new_tile = TileMap()
-            if self.nowBlocks.value == Blocks.wall.value:
-                new_tile = TileMap(tile_x, tile_y,camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-            elif self.nowBlocks.value == Blocks.conveyor.value:
-                new_tile = ConveyorTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-            elif self.nowBlocks.value == Blocks.beryllium_ore.value:
-                new_tile = OreTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-            elif self.nowBlocks.value == Blocks.drill.value:
-                new_tile = Drill(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-            elif self.nowBlocks.value == Blocks.base_tile.value:
-                new_tile = BaseTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-            elif self.nowBlocks.value == Blocks.crafter.value:
-                new_tile = CrafterTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-            elif self.nowBlocks.value == Blocks.coal_ore.value:
-                new_tile = OreTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-            elif self.nowBlocks.value == Blocks.furnace.value:
-                new_tile = FurnaceTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-            elif self.nowBlocks.value == Blocks.iron_ore.value:
-                new_tile = IronOreTile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
+            new_tile = self.make_tile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
 
             return new_tile
         else:
@@ -127,6 +109,8 @@ class TileMapManager:
                 self.nowBlocks = Blocks.coal_ore
             elif event.key == SDLK_8:
                 self.nowBlocks = Blocks.iron_ore
+            elif event.key == SDLK_9:
+                self.nowBlocks = Blocks.copper_ore
 
             # 타일맵 추가저장
 
@@ -139,32 +123,15 @@ class TileMapManager:
 
             x = int(values[0])  # 첫 번째 값: 정수
             y = int(values[1])  # 두 번째 값: 정수
-            image = Blocks(int(values[2]))  # 세 번째 값: 정수 각각 타일의 이름 Blocks의 저장됨
+            block_type = Blocks(int(values[2]))  # 세 번째 값: 정수 각각 타일의 이름 Blocks의 저장됨
             flip = values[3] # 네 번째 값: 문자열 또는 None
             degree = int(values[4])  # 다섯 번째 값: 부동소수점 수
             layer=Layer(int(values[5]))  # 여섯 번째 값: 정수
 
-            tile_map = TileMap()
-            if image.value == Blocks.wall.value:
-                tile_map = TileMap(x, y, 0, 0, layer, image, flip, degree)
-            elif image.value == Blocks.conveyor.value:
-                tile_map = ConveyorTile(x, y, 0, 0, layer, image, flip, degree)
-            elif image.value == Blocks.beryllium_ore.value:
-                tile_map = OreTile(x,y,0,0,layer, image, flip, degree)
-            elif image.value == Blocks.drill.value:
-                tile_map = Drill(x, y, 0, 0, layer, image, flip, degree)
-            elif image.value == Blocks.base_tile.value:
-                tile_map = BaseTile(x, y, 0, 0, layer, image, flip, degree)
-            elif image.value == Blocks.crafter.value:
-                tile_map = CrafterTile(x, y, 0, 0, layer, image, flip, degree)
-            elif image.value == Blocks.coal_ore.value:
-                tile_map = OreTile(x, y, 0, 0, layer, image, flip, degree)
-            elif image.value == Blocks.furnace.value:
-                tile_map = FurnaceTile(x, y, 0, 0, layer, image, flip, degree)
-            elif image.value == Blocks.iron_ore.value:
-                tile_map = IronOreTile(x, y, 0, 0, layer, image, flip, degree)
+            tile_map = self.make_tile(x, y, 0, 0, layer, block_type, flip, degree)
 
-            self.grid.mark_center_used((x, y, image.value, flip, degree), layer) # 파일에서 타일 불러올때 그리드에도 업데이트를 함
+
+            self.grid.mark_center_used((x, y, block_type.value, flip, degree), layer) # 파일에서 타일 불러올때 그리드에도 업데이트를 함
             game_world.add_object(tile_map, layer)
 
     def save(self, path, mode):
@@ -183,3 +150,28 @@ class TileMapManager:
                             f'{used_center_tuple[4]},{i}\n')
                 i += 1
             f.close()
+
+    def make_tile(self,x,y,camera_x,camera_y,layer,block_type,flip,degree):
+        tile_map = None
+        if block_type.value == Blocks.wall.value:
+            tile_map = TileMap(x, y, camera_x, camera_y, layer, block_type, flip, degree)
+        elif block_type.value == Blocks.conveyor.value:
+            tile_map = ConveyorTile(x, y, camera_x, camera_y, layer, block_type, flip, degree)
+        elif block_type.value == Blocks.beryllium_ore.value:
+            tile_map = OreTile(x, y, camera_x, camera_y, layer, block_type, flip, degree)
+        elif block_type.value == Blocks.drill.value:
+            tile_map = Drill(x, y, camera_x, camera_y, layer, block_type, flip, degree)
+        elif block_type.value == Blocks.base_tile.value:
+            tile_map = BaseTile(x, y, camera_x, camera_y, layer, block_type, flip, degree)
+        elif block_type.value == Blocks.crafter.value:
+            tile_map = CrafterTile(x, y, camera_x, camera_y, layer, block_type, flip, degree)
+        elif block_type.value == Blocks.coal_ore.value:
+            tile_map = OreTile(x, y, camera_x, camera_y, layer, block_type, flip, degree)
+        elif block_type.value == Blocks.furnace.value:
+            tile_map = FurnaceTile(x, y, camera_x, camera_y, layer, block_type, flip, degree)
+        elif block_type.value == Blocks.iron_ore.value:
+            tile_map = IronOreTile(x, y, camera_x, camera_y, layer, block_type, flip, degree)
+        elif block_type.value == Blocks.copper_ore.value:
+            tile_map = CopperOreTile(x, y, camera_x, camera_y, layer, block_type, flip, degree)
+
+        return tile_map

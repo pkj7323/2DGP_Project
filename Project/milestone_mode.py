@@ -20,7 +20,7 @@ def handle_events():
             game_framework.pop_mode()
 
 def update():
-    pass
+    game_world.update()
 
 def draw():
     clear_canvas()

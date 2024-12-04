@@ -6,8 +6,10 @@ world = [[] for i in range(Layer.end.value)]
 collision_pairs = {}
 #{key:[[][]]}
 items={}
-#{ Items.key : int}
+#{ Items.ore_name : int}
 degree = 0
+milestones = 0
+
 
 def reset_world():
     global world

@@ -82,15 +82,18 @@ class Oreitem:
             self.image = load_image("Resource/item-pyratite.png")
         elif self.ore_type == Items.titanium:
             self.image = load_image("Resource/item-titanium.png")
+            game_world.add_collision_pair("Beacon:Ore", None, self)
         elif self.ore_type == Items.tungsten:
             self.image = load_image("Resource/item-tungsten.png")
         elif self.ore_type == Items.diamond:
             self.image = load_image("Resource/item-diamond.png")
+            game_world.add_collision_pair("Diamond:Rod", self, None)
         elif self.ore_type == Items.iron_ore:
             self.image = load_image("Resource/item-raw-iron.png")
             game_world.add_collision_pair("Furnace:Ore", None, self)
         elif self.ore_type == Items.iron_ingot:
             self.image = load_image("Resource/item-iron-ingot.png")
+            game_world.add_collision_pair("Beacon:Ore", None, self)
 
     def update(self):
         self.state_machine.update()
@@ -130,6 +133,10 @@ class Oreitem:
             self.dir_x, self.dir_y = other.dir_x, other.dir_y
             self.speed = other.transfer_speed
         if group == 'Base:Ore':
+            game_world.remove_object(self)
+        if group == 'Diamond:Rod':
+            game_world.remove_object(self)
+        if group == 'Beacon:Ore':
             game_world.remove_object(self)
         if group == 'Crafter:Ore':
             if self.ore_type == Items.diamond:

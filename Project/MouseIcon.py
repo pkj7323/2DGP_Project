@@ -15,7 +15,8 @@ class MouseIcon:
     def draw(self):
         if self.image is None:
             return
-        elif self.block == Blocks.furnace or self.block == Blocks.iron_ore or self.block == Blocks.copper_ore:
+        elif (self.block == Blocks.furnace or self.block == Blocks.iron_ore or self.block == Blocks.copper_ore
+              or self.block == Blocks.titanium_ore or self.block == Blocks.beacon):
             self.image.draw(self.x+16,self.y-16,32,32)
         else:
             self.image.draw(self.x,self.y,64,64)
@@ -26,11 +27,11 @@ class MouseIcon:
             self.x, self.y = event.x, (get_canvas_height() - event.y)
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_F1:
-                self.image = load_image('Resource/cursor.png')
-                self.block = None
+                self.image = load_image('Resource/tile-titanium-ore.png')
+                self.block = Blocks.titanium_ore
             elif event.key == SDLK_F2:
-                self.image = load_image('Resource/hand.png')
-                self.block = None
+                self.image = load_image('Resource/tile-beacon.png')
+                self.block = Blocks.beacon
             elif event.key == SDLK_F3:
                 self.image = load_image('Resource/target.png')
                 self.block = None

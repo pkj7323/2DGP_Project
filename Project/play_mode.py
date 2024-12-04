@@ -6,7 +6,7 @@ from Project.Camera import Camera
 from Project.Oreitem import Oreitem
 from Project.enum_define import Layer, Items
 from Project.MouseIcon import MouseIcon
-from Project import game_world
+from Project import game_world, milestone_mode2
 from Project import tile_map_manager
 from Project import game_framework
 # Game object class here
@@ -29,7 +29,10 @@ def handle_events():
         elif event.type == SDL_KEYDOWN and event.key == SDLK_ESCAPE:
             game_framework.quit()
         elif event.type == SDL_KEYDOWN and event.key == SDLK_i:
-            game_framework.push_mode(milestone_mode)
+            if game_world.milestones == 0:
+                game_framework.push_mode(milestone_mode)
+            elif game_world.milestones == 1:
+                game_framework.push_mode(milestone_mode2)
         # elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
         #     ore = Oreitem('diamond-ore-item',event.x, (get_canvas_height() - event.y),Items.diamond)
         #     game_world.add_object(ore,Layer.ore)

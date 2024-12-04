@@ -2,13 +2,13 @@ from pico2d import clear_canvas, update_canvas, get_events
 from sdl2 import SDL_KEYDOWN, SDLK_i, SDLK_ESCAPE
 
 from Project.enum_define import Layer
-from Project.pannel import Pannel
+from Project.pannel import Pannel, Pannel_2
 from Project import game_world
 from Project import game_framework
 
 def init():
     global pannel
-    pannel = Pannel()
+    pannel = Pannel_2()
     game_world.add_object(pannel, Layer.milestone)
 
 def handle_events():

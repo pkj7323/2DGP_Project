@@ -26,6 +26,7 @@ class BaseTile(TileMap):
         super().__init__(x,y, camera_x, camera_y, layer, blocks, flip, degree)
         self.image = load_image("Resource/container-Sheet.png")
         game_world.add_collision_pair("Base:Ore", self, None)
+        game_world.add_collision_pair("Base:Item", self, None)
 
 
 
@@ -46,6 +47,8 @@ class BaseTile(TileMap):
     def handle_collision(self, group, other):
         if group == 'Base:Ore':
             game_world.add_item_once(other.ore_type)
+        if group == 'Base:Item':
+            game_world.add_item_once(other.item_type)
 
     def handle_collision_end(self):
         pass

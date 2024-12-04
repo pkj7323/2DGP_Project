@@ -39,6 +39,9 @@ class Mine:
             elif drill.ore_type == Items.iron_ore:
                 ore_item = Oreitem('iron_ore_item', drill.x + drill.discharge_dir_x * drill.bb_size_x / 2,
                                drill.y + drill.discharge_dir_y * drill.bb_size_y / 2, Items.iron_ore)
+            elif drill.ore_type == Items.titanium:
+                ore_item = Oreitem('titanium_ore_item', drill.x + drill.discharge_dir_x * drill.bb_size_x / 2,
+                               drill.y + drill.discharge_dir_y * drill.bb_size_y / 2, Items.titanium)
             game_world.add_object(ore_item, Layer.ore)
     @staticmethod
     def draw(drill):
@@ -125,6 +128,10 @@ class Drill(TileMap):
                 self.ore_type = Items.copper
                 self.state_machine.add_event(('ON_ORE',0))
                 self.drilling_speed = 2
+            elif other.blocks == Blocks.titanium_ore:
+                self.ore_type = Items.titanium
+                self.state_machine.add_event(('ON_ORE',0))
+                self.drilling_speed = 5
 
 
     def handle_collision_end(self):

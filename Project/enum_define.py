@@ -22,6 +22,7 @@ class Blocks(enum.Enum):
     crafter = 11
     furnace = 12
     iron_ore = 13
+    beacon = 14
 
 class Items(enum.Enum):
     beryllium = 1
@@ -33,3 +34,5 @@ class Items(enum.Enum):
     diamond = 7
     iron_ore = 8
     iron_ingot = 9
+    rod = 10
+    diamond_sword = 11

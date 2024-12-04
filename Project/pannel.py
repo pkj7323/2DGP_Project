@@ -1,4 +1,4 @@
-from pico2d import load_image
+from pico2d import load_image, load_music
 from Project import game_world
 from Project.enum_define import Items
 
@@ -34,8 +34,20 @@ class Pannel:
 
 class Pannel_2:
     def __init__(self):
-        self.image = load_image('Resource/milestone.png')
-        self.complete_image = load_image('Resource/yellow.png')
+        self.image = load_image('Resource/milestone_2.png')
+
+    def update(self):
+        pass
+
+    def draw(self):
+        self.image.draw(400,300)
+
+class EndingPannel:
+    def __init__(self):
+        self.image = load_image('Resource/ending.png')
+        self.sound = load_music('Resource/StellarDrone-Pluto.mp3')
+        self.sound.set_volume(100)
+        self.sound.play()
 
     def update(self):
         pass

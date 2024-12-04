@@ -1,10 +1,13 @@
+from idlelib.tree import TreeItem
+
+from Project.tiles.beacon_tile import BeaconTile
 from Project.tiles.drill import Drill
-from Project.enum_define import Layer, Blocks
+from Project.enum_define import Layer, Blocks, Items
 from Project.tiles.conveyor_tile import ConveyorTile
 from Project.tiles.base_tile import BaseTile
 from Project.tiles.crafter_tile import CrafterTile
 from Project.tiles.furnace_tile import FurnaceTile
-from Project.tiles.ore_tile import OreTile, IronOreTile, CopperOreTile
+from Project.tiles.ore_tile import OreTile, IronOreTile, CopperOreTile, TitaniumOreTile
 from Project.tiles.tile_map import TileMap
 from pico2d import *
 from Grid import *
@@ -43,14 +46,14 @@ class TileMapManager:
         tile_x, tile_y = self.grid.adjust_to_nearest_center(x,y)
         center_x, center_y = self.grid.adjust_to_nearest_center(x + camera.x, y + camera.y)
         #마우스 위치보정하는 코드
+        if self.reduce_resource(self.nowBlocks):
+            if self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip, self.degree), self.layer):
+                self.grid.mark_center_used((center_x, center_y, self.nowBlocks.value, self.flip, self.degree), self.layer)
+                new_tile = self.make_tile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
 
-        if self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip, self.degree), self.layer):
-            self.grid.mark_center_used((center_x, center_y, self.nowBlocks.value, self.flip, self.degree), self.layer)
-            new_tile = self.make_tile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
-
-            return new_tile
-        else:
-            return None
+                return new_tile
+            else:
+                return None
     def remove_click(self,x,y,camera):
         center_x, center_y = self.grid.adjust_to_nearest_center(x + camera.x, y + camera.y)
         tile_x, tile_y = self.grid.adjust_to_nearest_center(x, y)
@@ -72,6 +75,7 @@ class TileMapManager:
             if new_tile is not None:#is와 is not은 객체끼리 비교함 값이 같아도 다르게 비교함
                 # 값끼리 비교하는 거면 원래 비교연산자 써야됨 주의주의
                 game_world.add_object(new_tile, self.layer)
+
             else:
                 pass
         elif event.type == SDL_MOUSEBUTTONDOWN and event.button == SDL_BUTTON_RIGHT:
@@ -111,6 +115,10 @@ class TileMapManager:
                 self.nowBlocks = Blocks.iron_ore
             elif event.key == SDLK_9:
                 self.nowBlocks = Blocks.copper_ore
+            elif event.key == SDLK_F1:
+                self.nowBlocks = Blocks.titanium_ore
+            elif event.key == SDLK_F2:
+                self.nowBlocks = Blocks.beacon
 
             # 타일맵 추가저장
 
@@ -173,5 +181,63 @@ class TileMapManager:
             tile_map = IronOreTile(x, y, camera_x, camera_y, layer, block_type, flip, degree)
         elif block_type.value == Blocks.copper_ore.value:
             tile_map = CopperOreTile(x, y, camera_x, camera_y, layer, block_type, flip, degree)
-
+        elif block_type.value == Blocks.titanium_ore.value:
+            tile_map = TitaniumOreTile(x, y, camera_x, camera_y, layer, block_type, flip, degree)
+        elif block_type.value == Blocks.beacon.value:
+            tile_map = BeaconTile(x, y, camera_x, camera_y, layer, block_type, flip, degree)
         return tile_map
+
+    def reduce_resource(self,nowBlocks):
+        if nowBlocks.value == Blocks.wall.value:
+            pass
+        elif nowBlocks.value == Blocks.conveyor.value:
+            if game_world.items[Items.beryllium] >= 1:
+                game_world.items[Items.beryllium] -= 1
+                return True
+            else:
+                return False
+        elif nowBlocks.value == Blocks.beryllium_ore.value:
+            pass
+        elif nowBlocks.value == Blocks.drill.value:
+            if game_world.items[Items.beryllium] >= 5:
+                game_world.items[Items.beryllium] -= 5
+                return True
+            else:
+                return False
+        elif nowBlocks.value == Blocks.base_tile.value:
+            if game_world.items[Items.beryllium] >= 10 and game_world.items[Items.copper] >= 10:
+                game_world.items[Items.beryllium] -= 10
+                game_world.items[Items.copper] -= 10
+                return True
+            else:
+                return False
+        elif nowBlocks.value == Blocks.crafter.value:
+            if game_world.items[Items.beryllium] >= 10:
+                game_world.items[Items.beryllium] -= 10
+                return True
+            else:
+                return False
+        elif nowBlocks.value == Blocks.coal_ore.value:
+            pass
+        elif nowBlocks.value == Blocks.furnace.value:
+            if game_world.items[Items.beryllium] >= 10 and game_world.items[Items.copper] >= 10:
+                game_world.items[Items.beryllium] -= 10
+                game_world.items[Items.copper] -= 10
+                return True
+            else:
+                return False
+        elif nowBlocks.value == Blocks.iron_ore.value:
+            pass
+        elif nowBlocks.value == Blocks.copper_ore.value:
+            pass
+        elif nowBlocks.value == Blocks.titanium_ore.value:
+            pass
+        elif nowBlocks.value == Blocks.beacon.value:
+            if game_world.items[Items.beryllium] >= 10 and game_world.items[Items.copper] >= 10:
+                game_world.items[Items.beryllium] -= 10
+                game_world.items[Items.copper] -= 10
+                return True
+            else:
+                return False
+
+        return True

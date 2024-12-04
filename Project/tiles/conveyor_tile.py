@@ -38,6 +38,7 @@ class ConveyorTile(TileMap):
             self.bb_size_x = self.size
             self.bb_size_y = 0
         game_world.add_collision_pair("ore:CONVEYOR1", None, self)
+        game_world.add_collision_pair("Item:CONVEYOR1", None, self)
 
         self.transfer_speed = 20.0
         self.colliding = False

@@ -21,15 +21,30 @@ def draw_item_counts():
     x = 0
     y = get_canvas_height() - 40  # Top-down 위치 설정
     _font = load_font('Resource/KCC_dodaumdodaum.ttf', 16)
+
     for item, count in items.items():
         text = f"{item}: {count}"
         _font.draw(x, y, text, (255, 255, 255))
         y -= 20  # 다음 줄로 내려가기 위한 y 좌표 조정
-
         # 화면 아래로 넘어가지 않도록 체크
         if y < 0:
             y = get_canvas_height() - 40
             x += 100  # 새로운 열로 이동
+
+def save_items():
+    f = open('Resource/items.txt', 'w')
+    for item, count in items.items():
+        text = f"{int(item.value)},{int(count)}"
+        f.write(text + '\n')
+    f.close()
+
+def load_items():
+    f = open('Resource/items.txt', 'r')
+    for line in f:
+        value, count = line.split(',')
+        items[Items(int(value))] = int(count)
+    f.close()
+
 
 
 def add_collision_pair(key,obj1,obj2):

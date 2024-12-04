@@ -49,8 +49,8 @@ def init():
     Camera_Instance = Camera()
     background = BackGround()
     game_world.add_object(background,Layer.backGround)
-
-    tile_map_instance.open_tile('tiles.txt')
+    game_world.load_items()
+    tile_map_instance.open_tile('Resource/tiles.txt')
 
     cursor.image=load_image('Resource/cursor.png')
 
@@ -73,7 +73,7 @@ def draw():
     update_canvas()
 
 def finish(): # finalization code
-    tile_map_manager.save_no_duplication('tiles.txt')
+    game_world.save_items()
     #close_canvas()
 
 def pause():

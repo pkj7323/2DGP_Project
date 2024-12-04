@@ -22,7 +22,7 @@ def save_no_duplication(path):
         f2.write(line)
     f2.close()
 
-    f2.close()
+    f1.close()
 
 
 
@@ -96,9 +96,9 @@ class TileMapManager:
             self.remove_click(event.x, (get_canvas_height() - event.y), camera_instance)
         elif event.type == SDL_KEYDOWN:
             if event.key == SDLK_F8:
-                self.save('tiles.txt', 0)
+                self.save('Resource/tiles.txt', 0)
             elif event.key == SDLK_F9:
-                self.save('tiles.txt', 1)
+                self.save('Resource/tiles.txt', 1)
             elif event.key == SDLK_e:
                 self.degree += 90
                 if self.degree >= 360:

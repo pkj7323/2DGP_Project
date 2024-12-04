@@ -3,10 +3,9 @@ import math
 from pico2d import load_image, draw_rectangle, load_font
 
 from Project import game_world, game_framework
-from Project.Oreitem import Oreitem
 from Project.enum_define import Blocks, Layer, Items
 from Project.game_item import GameItem
-from Project.tiles.tile_map import TileMap
+from Project.tile_map import TileMap
 
 TIME_PER_ACTION = 4
 ACTION_PER_TIME = 1.0 / TIME_PER_ACTION

@@ -1,13 +1,12 @@
 import math
 
-from fontTools.unicodedata import block
 from pico2d import load_image, draw_rectangle
 
 from Project import game_framework
 from Project.Oreitem import Oreitem
 from Project.enum_define import Layer, Blocks, Items
 from Project.state_machine import StateMachine, on_ore
-from Project.tiles.tile_map import TileMap
+from Project.tile_map import TileMap
 from Project import game_world
 
 # Boy Action Speed

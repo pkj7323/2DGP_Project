@@ -1,14 +1,12 @@
-from idlelib.tree import TreeItem
-
-from Project.tiles.beacon_tile import BeaconTile
-from Project.tiles.drill import Drill
+from Project.beacon_tile import BeaconTile
+from Project.drill import Drill
 from Project.enum_define import Layer, Blocks, Items
-from Project.tiles.conveyor_tile import ConveyorTile
-from Project.tiles.base_tile import BaseTile
-from Project.tiles.crafter_tile import CrafterTile
-from Project.tiles.furnace_tile import FurnaceTile
-from Project.tiles.ore_tile import OreTile, IronOreTile, CopperOreTile, TitaniumOreTile
-from Project.tiles.tile_map import TileMap
+from Project.conveyor_tile import ConveyorTile
+from Project.base_tile import BaseTile
+from Project.crafter_tile import CrafterTile
+from Project.furnace_tile import FurnaceTile
+from Project.ore_tile import OreTile, IronOreTile, CopperOreTile, TitaniumOreTile
+from Project.tile_map import TileMap
 from pico2d import *
 from Grid import *
 from Project import game_world

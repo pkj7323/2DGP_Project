@@ -4,7 +4,7 @@ from Project import game_framework
 from Project import game_world
 from Project.Oreitem import Oreitem
 from Project.enum_define import Layer, Blocks, Items
-from Project.tiles.tile_map import TileMap
+from Project.tile_map import TileMap
 import math
 
 

@@ -1,5 +1,5 @@
 from Project import game_world
-from Project.tiles.tile_map import TileMap
+from Project.tile_map import TileMap
 from pico2d import *
 from enum_define import Layer
 from enum_define import Blocks

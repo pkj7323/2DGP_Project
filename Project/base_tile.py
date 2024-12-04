@@ -2,7 +2,7 @@ from pico2d import load_image, draw_rectangle
 
 from Project import game_framework, game_world
 from Project.enum_define import Layer, Blocks
-from Project.tiles.tile_map import TileMap
+from Project.tile_map import TileMap
 import math
 
 

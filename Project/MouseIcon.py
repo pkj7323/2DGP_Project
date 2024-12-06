@@ -26,45 +26,21 @@ class MouseIcon:
         if event.type == SDL_MOUSEMOTION:
             self.x, self.y = event.x, (get_canvas_height() - event.y)
         elif event.type == SDL_KEYDOWN:
-            if event.key == SDLK_F1:
-                self.image = load_image('Resource/tile-titanium-ore.png')
-                self.block = Blocks.titanium_ore
-            elif event.key == SDLK_F2:
-                self.image = load_image('Resource/tile-beacon.png')
-                self.block = Blocks.beacon
-            elif event.key == SDLK_F3:
-                self.image = load_image('Resource/target.png')
-                self.block = None
-            elif event.key == SDLK_F4:
-                self.image = load_image('Resource/drill.png')
-                self.block = None
-            elif event.key == SDLK_0:
-                self.image = load_image('Resource/cursor-tile.png')
-                self.block = Blocks.wall
-            elif event.key == SDLK_1:
+            if event.key == SDLK_1:
                 self.image = load_image('Resource/cursor-conveyor.png')
                 self.block = Blocks.conveyor
             elif event.key == SDLK_2:
-                self.image = load_image('Resource/cursor-beryllium-ore.png')
-                self.block = Blocks.beryllium_ore
-            elif event.key == SDLK_3:
                 self.image = load_image('Resource/cursor-blast-drill.png')
                 self.block = Blocks.drill
+            elif event.key == SDLK_3:
+                self.image = load_image('Resource/cursor-crafter.png')
+                self.block = Blocks.crafter
             elif event.key == SDLK_4:
                 self.image = load_image('Resource/cursor-container.png')
                 self.block = Blocks.base_tile
             elif event.key == SDLK_5:
-                self.image = load_image('Resource/cursor-crafter.png')
-                self.block = Blocks.crafter
-            elif event.key == SDLK_6:
                 self.image = load_image('Resource/tile-furnace.png')
                 self.block = Blocks.furnace
-            elif event.key == SDLK_7:
-                self.image = load_image('Resource/cursor-ore-coal-tile.png')
-                self.block = Blocks.coal_ore
-            elif event.key == SDLK_8:
-                self.image = load_image('Resource/ore-iron-tile.png')
-                self.block = Blocks.iron_ore
-            elif event.key == SDLK_9:
-                self.image = load_image('Resource/tile-copper-ore.png')
-                self.block = Blocks.copper_ore
+            elif event.key == SDLK_6:
+                self.image = load_image('Resource/tile-beacon.png')
+                self.block = Blocks.beacon

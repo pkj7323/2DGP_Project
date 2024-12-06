@@ -3,7 +3,7 @@ from Project.BackGround import *
 from Camera import Camera
 from Project.enum_define import Layer, Items
 from Project.MouseIcon import MouseIcon
-from Project import game_world, game_framework, play_mode
+from Project import game_world, game_framework, play_mode, how_to_menu_mode
 
 
 
@@ -19,7 +19,7 @@ def handle_events():
         elif event.type == SDL_KEYDOWN:
             game_world.reset_world()
             game_framework.pop_mode()
-            game_framework.push_mode(play_mode)
+            game_framework.push_mode(how_to_menu_mode)
 
 
 

@@ -44,7 +44,8 @@ class TileMapManager:
         tile_x, tile_y = self.grid.adjust_to_nearest_center(x,y)
         center_x, center_y = self.grid.adjust_to_nearest_center(x + camera.x, y + camera.y)
         #마우스 위치보정하는 코드
-        if self.reduce_resource(self.nowBlocks):
+        #if self.reduce_resource(self.nowBlocks):
+        if True:
             if self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip, self.degree), self.layer):
                 self.grid.mark_center_used((center_x, center_y, self.nowBlocks.value, self.flip, self.degree), self.layer)
                 new_tile = self.make_tile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)
@@ -93,30 +94,31 @@ class TileMapManager:
                 if self.degree <= -360:
                     self.degree = 0
                 game_world.degree = self.degree
-            elif event.key == SDLK_0:
-                self.nowBlocks = Blocks.wall
+
             elif event.key == SDLK_1:
                 self.nowBlocks = Blocks.conveyor
             elif event.key == SDLK_2:
-                self.nowBlocks = Blocks.beryllium_ore
-            elif event.key == SDLK_3:
                 self.nowBlocks = Blocks.drill
+            elif event.key == SDLK_3:
+                self.nowBlocks = Blocks.crafter
             elif event.key == SDLK_4:
                 self.nowBlocks = Blocks.base_tile
             elif event.key == SDLK_5:
-                self.nowBlocks = Blocks.crafter
-            elif event.key == SDLK_6:
                 self.nowBlocks = Blocks.furnace
-            elif event.key == SDLK_7:
-                self.nowBlocks = Blocks.coal_ore
-            elif event.key == SDLK_8:
-                self.nowBlocks = Blocks.iron_ore
-            elif event.key == SDLK_9:
-                self.nowBlocks = Blocks.copper_ore
-            elif event.key == SDLK_F1:
-                self.nowBlocks = Blocks.titanium_ore
-            elif event.key == SDLK_F2:
+            elif event.key == SDLK_6:
                 self.nowBlocks = Blocks.beacon
+            # elif event.key == SDLK_0:
+            #     self.nowBlocks = Blocks.wall
+            # elif event.key == SDLK_7:
+            #     self.nowBlocks = Blocks.coal_ore
+            # elif event.key == SDLK_8:
+            #     self.nowBlocks = Blocks.iron_ore
+            # elif event.key == SDLK_9:
+            #     self.nowBlocks = Blocks.copper_ore
+            # elif event.key == SDLK_F1:
+            #     self.nowBlocks = Blocks.titanium_ore
+            # elif event.key == SDLK_F2:
+            #     self.nowBlocks = Blocks.beryllium_ore
 
             # 타일맵 추가저장
 
@@ -186,16 +188,21 @@ class TileMapManager:
         return tile_map
 
     def reduce_resource(self,nowBlocks):
-        if nowBlocks.value == Blocks.wall.value:
-            pass
+
+        if nowBlocks.value == Blocks.beacon.value:
+            if game_world.items[Items.beryllium] >= 10 and game_world.items[Items.copper] >= 10:
+                game_world.items[Items.beryllium] -= 10
+                game_world.items[Items.copper] -= 10
+                return True
+            else:
+                return False
         elif nowBlocks.value == Blocks.conveyor.value:
             if game_world.items[Items.beryllium] >= 1:
                 game_world.items[Items.beryllium] -= 1
                 return True
             else:
                 return False
-        elif nowBlocks.value == Blocks.beryllium_ore.value:
-            pass
+
         elif nowBlocks.value == Blocks.drill.value:
             if game_world.items[Items.beryllium] >= 5:
                 game_world.items[Items.beryllium] -= 5
@@ -215,8 +222,6 @@ class TileMapManager:
                 return True
             else:
                 return False
-        elif nowBlocks.value == Blocks.coal_ore.value:
-            pass
         elif nowBlocks.value == Blocks.furnace.value:
             if game_world.items[Items.beryllium] >= 10 and game_world.items[Items.copper] >= 10:
                 game_world.items[Items.beryllium] -= 10
@@ -224,18 +229,6 @@ class TileMapManager:
                 return True
             else:
                 return False
-        elif nowBlocks.value == Blocks.iron_ore.value:
-            pass
-        elif nowBlocks.value == Blocks.copper_ore.value:
-            pass
-        elif nowBlocks.value == Blocks.titanium_ore.value:
-            pass
-        elif nowBlocks.value == Blocks.beacon.value:
-            if game_world.items[Items.beryllium] >= 10 and game_world.items[Items.copper] >= 10:
-                game_world.items[Items.beryllium] -= 10
-                game_world.items[Items.copper] -= 10
-                return True
-            else:
-                return False
+        else:
+            return True
 
-        return True

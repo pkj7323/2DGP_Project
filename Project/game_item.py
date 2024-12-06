@@ -10,7 +10,7 @@ from Project import ending_mode
 class Move:
     @staticmethod
     def enter(item, e):
-        item.timer = 0.0
+        pass
     @staticmethod
     def exit(item, e):
         pass
@@ -37,6 +37,8 @@ class Idle:
     @staticmethod
     def do(item):
         item.timer += game_framework.frame_time
+        if item.timer >= 5 and item.item_type == Items.diamond_sword:
+            game_framework.push_mode(ending_mode)
         if item.timer >= 5:
             game_world.remove_object(item)
 
@@ -55,6 +57,7 @@ class GameItem:
     def __init__(self, name, x, y, itemType):
         #필요한거: 위치, 이미지, state(레이어 나누기 위한 블럭state), 이름, state머신
         self.colliding = False
+        self.timer = 0.0
         self.item_type = itemType
         self.x = x
         self.y = y
@@ -65,8 +68,8 @@ class GameItem:
         self.state_machine.start(Idle)
         self.state_machine.set_transitions(
             {
-                Idle: { on_conveyor : Move ,leave_conveyor : Idle},
-                Move: { leave_conveyor : Idle, on_conveyor : Move},
+                Idle: { on_conveyor : Move},
+                Move: { leave_conveyor : Idle},
             }
         )
         game_world.add_collision_pair("Item:CONVEYOR1", self, None)
@@ -76,9 +79,9 @@ class GameItem:
             game_world.add_collision_pair("Diamond:Rod", None, self)
         elif self.item_type == Items.diamond_sword:
             self.image = load_image("Resource/item-diamond_sword.png")
-            sound = load_wav('Resource/levelup.wav')
-            sound.set_volume(10)
-            sound.play()
+            self.sound = load_wav('Resource/levelup.wav')
+            self.sound.set_volume(10)
+            self.sound.play()
             self.size = 128
 
 
@@ -125,10 +128,10 @@ class GameItem:
 
         if group == 'Diamond:Rod':
             game_world.remove_object(self)
-            result = random.randrange(1,100)
-            if result == 1:
+            result = random.randint(1,100)
+            if result < 40:
                 sword = GameItem("diamond_sword",self.x,self.y,Items.diamond_sword)
-                game_world.add_object(sword,Layer.end)
+                game_world.add_object(sword,Layer.mouse)
 
 
         self.colliding = True

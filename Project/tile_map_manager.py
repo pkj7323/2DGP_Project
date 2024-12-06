@@ -36,7 +36,7 @@ class TileMapManager:
         self.tile_size = 20
         self.grid = Grid(self.tile_size)
         self.layer = Layer.tile
-        self.nowBlocks = Blocks.wall
+        self.nowBlocks = Blocks.conveyor
         self.flip = ''
         self.degree = 0
     def click(self, x, y, camera):#block_state == type(BlockState)

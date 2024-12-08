@@ -44,8 +44,8 @@ class TileMapManager:
         tile_x, tile_y = self.grid.adjust_to_nearest_center(x,y)
         center_x, center_y = self.grid.adjust_to_nearest_center(x + camera.x, y + camera.y)
         #마우스 위치보정하는 코드
-        #if self.reduce_resource(self.nowBlocks):
-        if True:
+        if self.reduce_resource(self.nowBlocks):
+        #if True:
             if self.grid.is_center_available((center_x, center_y, self.nowBlocks.value, self.flip, self.degree), self.layer):
                 self.grid.mark_center_used((center_x, center_y, self.nowBlocks.value, self.flip, self.degree), self.layer)
                 new_tile = self.make_tile(tile_x, tile_y, camera.x, camera.y, self.layer, self.nowBlocks, self.flip, self.degree)

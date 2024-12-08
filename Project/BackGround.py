@@ -13,7 +13,7 @@ class BackGround:
         self.width = 3200
         self.height = 2400
         self.image = load_image("Resource\\Red_Sandstone.png")
-        self.arrow_image = load_image("Resource/arrow.png")
+        #self.arrow_image = load_image("Resource/arrow.png")
         self.layer = Layer.backGround
         self.music = load_music('Resource/Sounds/fine.ogg')
         self.music.set_volume(30)
@@ -22,7 +22,6 @@ class BackGround:
         pass
     def draw(self):
         self.image.draw(self.x,self.y,self.width,self.height)
-        self.arrow_image.clip_composite_draw(0,0,32,32,math.radians(game_world.degree),'',10,get_canvas_height() - 15,32,32)
     def move(self, x ,y):
         self.x += x
         self.y += y

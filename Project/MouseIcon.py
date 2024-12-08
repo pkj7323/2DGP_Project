@@ -12,7 +12,10 @@ class MouseIcon:
         self.state = Layer.mouse
         self.image = None
         self.block = None
+        self.arrow_image = load_image("Resource/arrow.png")
     def draw(self):
+        self.arrow_image.clip_composite_draw(0, 0, 32, 32, math.radians(game_world.degree), '', 10,
+                                             get_canvas_height() - 15, 32, 32)
         if self.image is None:
             return
         elif (self.block == Blocks.furnace or self.block == Blocks.iron_ore or self.block == Blocks.copper_ore

@@ -13,9 +13,8 @@ from Project.game_item import GameItem
 
 # Game object class here
 
-Camera_Instance = Camera()
-tile_map_instance = tile_map_manager.TileMapManager()
-cursor = MouseIcon()
+
+
 
 
 
@@ -55,6 +54,9 @@ def init():
     global running
     global Camera_Instance
     global cursor
+    global tile_map_instance
+    cursor = MouseIcon()
+    tile_map_instance = tile_map_manager.TileMapManager()
     Camera_Instance = Camera()
     background = BackGround()
     game_world.add_object(background,Layer.backGround)

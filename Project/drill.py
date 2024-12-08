@@ -41,6 +41,9 @@ class Mine:
             elif drill.ore_type == Items.titanium:
                 ore_item = Oreitem('titanium_ore_item', drill.x + drill.discharge_dir_x * drill.bb_size_x / 2,
                                drill.y + drill.discharge_dir_y * drill.bb_size_y / 2, Items.titanium)
+            elif drill.ore_type == Items.copper:
+                ore_item = Oreitem('copper_ore_item',drill.x + drill.discharge_dir_x * drill.bb_size_x / 2,
+                               drill.y + drill.discharge_dir_y * drill.bb_size_y / 2, Items.copper)
             game_world.add_object(ore_item, Layer.ore)
     @staticmethod
     def draw(drill):

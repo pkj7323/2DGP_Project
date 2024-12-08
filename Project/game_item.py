@@ -18,9 +18,8 @@ class Move:
     def do(item):
         item.x += item.dir_x * item.speed * game_framework.frame_time
         item.y += item.dir_y * item.speed * game_framework.frame_time
-        item.timer += game_framework.frame_time
-        if item.timer >= 5 and item.item_type == Items.diamond_sword:
-            game_framework.push_mode(ending_mode)
+
+
     @staticmethod
     def draw(item):
         item.image.draw(item.x, item.y, item.size, item.size)
@@ -36,7 +35,7 @@ class Idle:
 
     @staticmethod
     def do(item):
-        item.timer += game_framework.frame_time
+
         if item.timer >= 5 and item.item_type == Items.diamond_sword:
             game_framework.push_mode(ending_mode)
         if item.timer >= 5:
@@ -57,7 +56,7 @@ class GameItem:
     def __init__(self, name, x, y, itemType):
         #필요한거: 위치, 이미지, state(레이어 나누기 위한 블럭state), 이름, state머신
         self.colliding = False
-        self.timer = 0.0
+
         self.item_type = itemType
         self.x = x
         self.y = y
@@ -83,10 +82,12 @@ class GameItem:
             self.sound.set_volume(10)
             self.sound.play()
             self.size = 128
+            self.timer = 0.0
 
 
     def update(self):
         self.state_machine.update()
+
         self.check_collision_end()
 
     def handle_event(self, event):
@@ -132,6 +133,7 @@ class GameItem:
             if result < 40:
                 sword = GameItem("diamond_sword",self.x,self.y,Items.diamond_sword)
                 game_world.add_object(sword,Layer.mouse)
+                game_world.do_ending = True
 
 
         self.colliding = True

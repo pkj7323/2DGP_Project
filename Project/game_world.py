@@ -1,5 +1,5 @@
 from pico2d import load_font, get_canvas_height
-
+from Project import game_framework, ending_mode
 from Project.enum_define import Layer, Items
 
 world = [[] for i in range(Layer.end.value)]
@@ -9,7 +9,8 @@ items={}
 #{ Items.ore_name : int}
 degree = 0
 milestones = 0
-
+do_ending = False
+do_ending_timer = 0.0
 
 def reset_world():
     global world
@@ -109,6 +110,13 @@ def add_object(obj,layer):
     world[layer.value].append(obj)
 
 def update():
+    global do_ending_timer
+    global do_ending
+    if do_ending:
+        do_ending_timer += game_framework.frame_time
+    if do_ending_timer >= 5:
+        do_ending = False
+        game_framework.push_mode(ending_mode)
     for layer in range(Layer.end.value):
         for obj in world[layer]:
             obj.update()
